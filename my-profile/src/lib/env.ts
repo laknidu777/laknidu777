@@ -5,15 +5,11 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(3000),
   HOSTNAME: z.string().default("0.0.0.0"),
   DATABASE_URL: z
-    .string({
-      required_error: "DATABASE_URL is required. Provide a valid PostgreSQL connection string.",
-    })
-    .min(1, "DATABASE_URL cannot be empty."),
+    .string()
+    .min(1, "DATABASE_URL is required. Provide a valid PostgreSQL connection string."),
   AUTH_SECRET: z
-    .string({
-      required_error: "AUTH_SECRET is required for session security. Generate one using: openssl rand -base64 32",
-    })
-    .min(16, "AUTH_SECRET must be at least 16 characters for cryptographic safety."),
+    .string()
+    .min(16, "AUTH_SECRET is required and must be at least 16 characters for cryptographic safety."),
   NEXTAUTH_URL: z.string().url("NEXTAUTH_URL must be a valid URL (e.g., https://example.com)").optional(),
   SMTP_HOST: z.string().default("smtp.gmail.com"),
   SMTP_PORT: z.coerce.number().default(465),

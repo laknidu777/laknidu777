@@ -2,37 +2,41 @@ import { prisma } from "@/lib/prisma";
 import { ProjectCategory } from "@/generated/prisma/client";
 
 export async function getPortfolioData() {
-  const [
-    projects,
-    experiences,
-    skills,
-    settings,
-  ] = await Promise.all([
-    // Only published projects ordered by sortOrder
-    prisma.project.findMany({
-      where: { published: true },
-      orderBy: [
-        { sortOrder: "asc" },
-        { createdAt: "desc" },
-      ],
-    }),
-    // Experiences ordered by sortOrder
-    prisma.experience.findMany({
-      orderBy: [
-        { sortOrder: "asc" },
-        { startDate: "desc" },
-      ],
-    }),
-    // Skills ordered by category and sortOrder
-    prisma.skill.findMany({
-      orderBy: [
-        { category: "asc" },
-        { sortOrder: "asc" },
-      ],
-    }),
-    // Site settings
-    prisma.siteSetting.findMany(),
-  ]);
+  let projects: Awaited<ReturnType<typeof prisma.project.findMany>> = [];
+  let experiences: Awaited<ReturnType<typeof prisma.experience.findMany>> = [];
+  let skills: Awaited<ReturnType<typeof prisma.skill.findMany>> = [];
+  let settings: Awaited<ReturnType<typeof prisma.siteSetting.findMany>> = [];
+
+  try {
+    [projects, experiences, skills, settings] = await Promise.all([
+      // Only published projects ordered by sortOrder
+      prisma.project.findMany({
+        where: { published: true },
+        orderBy: [
+          { sortOrder: "asc" },
+          { createdAt: "desc" },
+        ],
+      }),
+      // Experiences ordered by sortOrder
+      prisma.experience.findMany({
+        orderBy: [
+          { sortOrder: "asc" },
+          { startDate: "desc" },
+        ],
+      }),
+      // Skills ordered by category and sortOrder
+      prisma.skill.findMany({
+        orderBy: [
+          { category: "asc" },
+          { sortOrder: "asc" },
+        ],
+      }),
+      // Site settings
+      prisma.siteSetting.findMany(),
+    ]);
+  } catch (err: unknown) {
+    console.error("[PortfolioData Warning] Database query failed, using empty sets and defaults:", err);
+  }
 
   const settingsMap = settings.reduce<Record<string, string>>((acc, s) => {
     acc[s.key] = s.value;
