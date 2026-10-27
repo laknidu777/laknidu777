@@ -1,4 +1,4 @@
-
+// Prisma Client instance with PostgreSQL adapter
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../generated/prisma/client";
 
@@ -17,8 +17,9 @@ const adapter = new PrismaPg({
 });
 
 export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({ adapter });
+  (globalForPrisma.prisma && "passwordResetOtp" in globalForPrisma.prisma)
+    ? globalForPrisma.prisma
+    : new PrismaClient({ adapter });
 
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;

@@ -12,6 +12,8 @@ function LoginForm() {
   const callbackUrl = searchParams.get("callbackUrl") || "/admin";
   const errorParam = searchParams.get("error");
 
+  const isResetSuccess = searchParams.get("reset") === "success";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(
@@ -67,6 +69,13 @@ function LoginForm() {
         {/* Glow corner */}
         <div className="absolute -top-16 -right-16 w-36 h-36 bg-indigo-500/20 rounded-full blur-2xl pointer-events-none" />
 
+        {isResetSuccess && (
+          <div className="mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-start space-x-3 text-emerald-300 text-sm">
+            <CheckCircle2 size={18} className="flex-shrink-0 mt-0.5 text-emerald-400" />
+            <span>Password updated successfully! Sign in with your new credentials below.</span>
+          </div>
+        )}
+
         {error && (
           <div className="mb-6 p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-start space-x-3 text-rose-300 text-sm">
             <AlertCircle size={18} className="flex-shrink-0 mt-0.5 text-rose-400" />
@@ -95,9 +104,17 @@ function LoginForm() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
-              Password
-            </label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider">
+                Password
+              </label>
+              <Link
+                href="/admin/forgot-password"
+                className="text-xs text-indigo-400 hover:text-indigo-300 hover:underline transition-colors font-medium"
+              >
+                Forgot password?
+              </Link>
+            </div>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
                 <Lock size={16} />

@@ -18,6 +18,7 @@ import {
   ChevronRight,
   X,
   FileText,
+  KeyRound,
 } from "lucide-react";
 
 interface AdminSidebarProps {
@@ -56,6 +57,7 @@ const navSections = [
       { name: "Profile", href: "/admin/profile", icon: User },
       { name: "Contact & Social", href: "/admin/contact", icon: Mail },
       { name: "Site Settings", href: "/admin/settings", icon: Settings },
+      { name: "Account & Credentials", href: "/admin/account", icon: KeyRound },
     ],
   },
 ];

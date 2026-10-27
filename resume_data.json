@@ -3,7 +3,7 @@
     "name": "Laknidu Thilakawardhana",
     "title": "DevOps & Software Engineer",
     "email": "laknidut@gmail.com",
-    "phone": "+44 7700 900123",
+    "phone": "+94 768671725",
     "portfolio": "laknidu.dev",
     "github": "github.com/laknidu777",
     "linkedin": "linkedin.com/in/laknidu-thilakawardhana-411783247"
@@ -11,45 +11,31 @@
   "summary": "DevOps and Software Engineer with proven expertise in orchestrating scalable cloud infrastructure, automated CI/CD pipelines, and high-performance full-stack applications. Experienced in Docker, Kubernetes, AWS, and modern microservices using .NET, NestJS, and Next.js. Dedicated to system reliability, infrastructure-as-code, and crafting frictionless developer workflows.",
   "experience": [
     {
-      "role": "Senior Software & DevOps Engineer",
-      "company": "TechNova Solutions",
+      "role": "Intern Software and Devops Engineer",
+      "company": "Koombiyo delivery",
       "duration": "Jan 2024 - Present",
       "bullets": [
         "Architected and managed scalable cloud deployments on AWS with automated CI/CD pipelines using GitHub Actions, cutting release cycles by 55%.",
         "Implemented micro-frontend architectures with Next.js and optimized backend rendering pipelines, resulting in a 40% reduction in latency.",
         "Containerized core services with Docker and orchestrated workloads on Kubernetes, maintaining 99.98% system uptime."
       ]
-    },
-    {
-      "role": "Full Stack Developer",
-      "company": "Creative Digital Agency",
-      "duration": "Jun 2021 - Dec 2023",
-      "bullets": [
-        "Engineered interactive web applications for high-profile client systems using Node.js, Next.js, and PostgreSQL with Prisma ORM.",
-        "Automated provisioning with Ansible scripts and configured Nginx reverse proxies with SSL termination for production clusters.",
-        "Built modular RESTful APIs and mentored junior software engineers in clean code and test-driven development."
-      ]
-    },
-    {
-      "role": "Research Assistant",
-      "company": "University Human-Computer Interaction Lab",
-      "duration": "Sep 2019 - May 2021",
-      "bullets": [
-        "Conducted empirical research on novel interaction paradigms and real-time collaboration tools with WebSockets and D3.js.",
-        "Co-authored 2 research papers accepted at premier ACM conferences (CHI & UIST)."
-      ]
     }
   ],
   "education": [
     {
-      "degree": "BSc (Hons) in Software Engineering",
-      "institution": "University of Plymouth",
-      "duration": "2021 - 2024",
-      "grade": "First Class Honours"
+      "degree": "BSc (Hons) in Computer Science",
+      "institution": "NSBM",
+      "duration": "2022 - 2025",
+      "grade": "Second Upper Class Honours"
     }
   ],
   "projects": {
     "work": [
+      {
+        "name": "Smart Home IoT Management System",
+        "technologies": "C++, Next.Js, ExpressJS, Node, PostgreSQL, React Native",
+        "description": "**Smart Home IoT Management System | Full-Stack & IoT Development**\n\nDesigned and developed a smart home IoT management system for large buildings and organizations, enabling centralized monitoring and control of devices such as lights and fans. Built a web-based management platform using **Next.js, Express.js, and React Native**, integrated with **ESP32 and Arduino UNO microcontrollers programmed in C++** for hardware-level device control.\n\n- Developed a centralized admin dashboard for managing devices, rooms, users, and access permissions across the building.\n- Implemented room management and user access control to ensure authorized individuals could manage designated spaces and devices.\n- Integrated IoT hardware with the software platform to enable remote control of connected electrical appliances.\n- Designed a scalable management solution to support multiple rooms, users, and connected devices within large building environments.\n\n**Technologies:** Next.js, Express.js, React Native, Arduino UNO, ESP32, C++, IoT, JavaScript."
+      },
       {
         "name": "COCO-VANTAGE",
         "technologies": "Next.js, NestJS, Prisma, PostgreSQL, Docker, GitHub Actions, Neon, Tailwind CSS",
@@ -57,25 +43,15 @@
       },
       {
         "name": "Kivi",
-        "technologies": "Flutter, Dart, Docker, GitHub Actions",
-        "description": "Cross-platform mobile application providing seamless real-time notifications, modular state architecture, and containerized API sync."
+        "technologies": "Flutter, Dart, Docker, Github, NestJS, Node, PostgreSQL",
+        "description": "Cloud POS—Subscription-Based Point-of-Sale System | Full-Stack Development\n\nDesigned and developed a cloud-based Point-of-Sale (POS) system for small and medium-sized enterprises (SMEs), offering a subscription-based business model. Built to support sales and inventory operations across devices, the platform enables businesses to manage products, track inventory, and add items using mobile phones or PCs, with barcode scanning and both online and offline functionality.\n\n- Developed a cross-platform application using **Flutter** and backend services using **NestJS**, with **PostgreSQL** for data storage and management.\n- Implemented inventory management features to manage products, stock levels, and item information.\n- Designed role-based access management through an administrative panel, allowing business owners to grant appropriate access to multiple users.\n- Supported product entry and barcode scanning using mobile phones, alongside PC-based workflows.\n- Designed the system to support online and offline usage, enabling businesses to continue essential POS operations with limited or no internet connectivity.\n- Integrated **GitHub Actions** into the development workflow to automate CI/CD tasks and streamline software delivery.\n\n**Technologies:** Flutter, NestJS, PostgreSQL, GitHub Actions, REST APIs, Barcode Scanning, Cloud POS, Inventory Management, Subscription-Based SaaS."
       }
     ],
     "personal": [
       {
-        "name": "Neon Nexus",
-        "technologies": "React, Three.js, TailwindCSS",
-        "description": "Cyberpunk-themed interactive productivity system with real-time procedural 3D effects and mission-driven task management."
-      },
-      {
-        "name": "Quantum State Manager",
-        "technologies": "TypeScript, React, State Management",
-        "description": "Zero-overhead state management library with time-travel debugging, snapshotting, and predictable immutable state mutations."
-      },
-      {
-        "name": "Echoes of Eternity",
-        "technologies": "Rust, WebAssembly, Web Audio API",
-        "description": "High-performance procedural game engine compiled to WASM for 60fps browser execution with dynamic ambient synthesis."
+        "name": "Smart Home IoT Management System",
+        "technologies": "C++, Next.Js, ExpressJS, Node, PostgreSQL, React Native",
+        "description": "**Smart Home IoT Management System | Full-Stack & IoT Development**\n\nDesigned and developed a smart home IoT management system for large buildings and organizations, enabling centralized monitoring and control of devices such as lights and fans. Built a web-based management platform using **Next.js, Express.js, and React Native**, integrated with **ESP32 and Arduino UNO microcontrollers programmed in C++** for hardware-level device control.\n\n- Developed a centralized admin dashboard for managing devices, rooms, users, and access permissions across the building.\n- Implemented room management and user access control to ensure authorized individuals could manage designated spaces and devices.\n- Integrated IoT hardware with the software platform to enable remote control of connected electrical appliances.\n- Designed a scalable management solution to support multiple rooms, users, and connected devices within large building environments.\n\n**Technologies:** Next.js, Express.js, React Native, Arduino UNO, ESP32, C++, IoT, JavaScript."
       }
     ]
   },
@@ -86,20 +62,8 @@
     "Databases & ORM": "PostgreSQL, MySQL, MongoDB, Microsoft SQL Server, Prisma, Firebase",
     "Tools & Scripting": "PowerShell, Postman, Vercel, Canva, Linux"
   },
-  "publications": [
-    {
-      "title": "Interactive Visualization of Quantum State Transitions in Web Environments",
-      "detail": "ACM Conference on Human Factors in Computing Systems (CHI) • 2023"
-    },
-    {
-      "title": "Analyzing the Impact of Micro-Animations on User Retention in SaaS Platforms",
-      "detail": "ACM Symposium on User Interface Software and Technology (UIST)"
-    }
-  ],
-  "activities": [
-    "Active Open Source Contributor across cloud infrastructure, developer toolkits, and DevOps automation.",
-    "Technical mentor at campus developer student clubs and hackathons focusing on cloud-native computing."
-  ],
+  "publications": [],
+  "activities": [],
   "references": [
     {
       "name": "University of Plymouth Academic Reference",

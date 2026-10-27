@@ -53,21 +53,27 @@ export default function AdminHeader({ onMobileOpen, title = "Admin CMS", user }:
 
         {/* User Pill */}
         <div className="flex items-center space-x-3 pl-3 sm:border-l sm:border-white/10">
-          <div className="hidden md:flex flex-col text-right">
-            <span className="text-xs font-medium text-white leading-none mb-1">
-              {user?.name || "Administrator"}
-            </span>
-            <div className="flex items-center justify-end space-x-1">
-              <ShieldCheck size={11} className="text-indigo-400" />
-              <span className="text-[10px] text-indigo-400 font-mono tracking-wider uppercase">
-                ADMIN
+          <Link
+            href="/admin/account"
+            className="flex items-center space-x-3 group hover:opacity-90 transition-opacity"
+            title="Manage Admin Credentials & Password"
+          >
+            <div className="hidden md:flex flex-col text-right">
+              <span className="text-xs font-medium text-white group-hover:text-indigo-300 leading-none mb-1 transition-colors">
+                {user?.name || "Administrator"}
               </span>
+              <div className="flex items-center justify-end space-x-1">
+                <ShieldCheck size={11} className="text-indigo-400" />
+                <span className="text-[10px] text-indigo-400 font-mono tracking-wider uppercase">
+                  ADMIN
+                </span>
+              </div>
             </div>
-          </div>
 
-          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-xs font-bold text-white shadow-inner">
-            {user?.name ? user.name.charAt(0).toUpperCase() : "A"}
-          </div>
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-xs font-bold text-white shadow-inner group-hover:ring-2 group-hover:ring-indigo-400/50 transition-all">
+              {user?.name ? user.name.charAt(0).toUpperCase() : "A"}
+            </div>
+          </Link>
 
           {/* Logout Button */}
           <button

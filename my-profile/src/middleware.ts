@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const isLoginPage = pathname === "/admin/login";
+  const isPublicAuthPage = pathname === "/admin/login" || pathname === "/admin/forgot-password";
 
   // Check for NextAuth session token in cookies (Edge runtime compatible)
   const sessionToken =
@@ -14,7 +14,7 @@ export function middleware(req: NextRequest) {
 
   const isLoggedIn = !!sessionToken;
 
-  if (pathname.startsWith("/admin") && !isLoginPage) {
+  if (pathname.startsWith("/admin") && !isPublicAuthPage) {
     if (!isLoggedIn) {
       const loginUrl = new URL("/admin/login", req.nextUrl.origin);
       loginUrl.searchParams.set("callbackUrl", pathname);
@@ -22,7 +22,7 @@ export function middleware(req: NextRequest) {
     }
   }
 
-  if (isLoginPage && isLoggedIn) {
+  if (isPublicAuthPage && isLoggedIn) {
     return NextResponse.redirect(new URL("/admin", req.nextUrl.origin));
   }
 

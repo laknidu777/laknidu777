@@ -93,3 +93,14 @@ model SiteSetting {
   updatedAt DateTime @updatedAt
 }
 
+model PasswordResetOtp {
+  id        String   @id @default(cuid())
+  email     String
+  otpHash   String
+  expiresAt DateTime
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}
+
