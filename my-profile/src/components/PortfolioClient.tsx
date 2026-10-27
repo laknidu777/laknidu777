@@ -14,7 +14,7 @@ import ContactSection from "./ContactSection";
 import Footer from "./Footer";
 import { PortfolioData } from "@/lib/portfolio-data";
 
-type IntroState = "loading" | "showing_text" | "done";
+type IntroState = "loading" | "done";
 
 interface PortfolioClientProps {
   initialData: PortfolioData;
@@ -24,8 +24,9 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<(HTMLImageElement | null)[]>(new Array(300).fill(null));
 
-  // States for intro
-  const [introState, setIntroState] = useState<IntroState>("showing_text");
+  // States for intro and loading
+  const [loadProgress, setLoadProgress] = useState(0);
+  const [introState, setIntroState] = useState<IntroState>("loading");
 
   // Total number of frames in the directory
   const frameCount = 300;
@@ -61,11 +62,32 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
     }
   }, [frameCount]);
 
-  // 1. Instantly load first frame and stream remaining WebP frames in background
+  // 1. Precise 2-Second Loading Progress Timer
+  useEffect(() => {
+    const startTime = Date.now();
+    const duration = 2000; // Exactly 2 seconds
+
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(100, Math.floor((elapsed / duration) * 100));
+      setLoadProgress(progress);
+
+      if (elapsed >= duration) {
+        clearInterval(interval);
+        setTimeout(() => {
+          setIntroState("done");
+        }, 120);
+      }
+    }, 25);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // 2. Load Frame 1 and stream remaining WebP frames in background while loading screen is active
   useEffect(() => {
     let isCancelled = false;
 
-    // Load first frame immediately for instant visual
+    // Load first frame immediately for instant visual canvas
     const firstImg = new Image();
     firstImg.src = "/frames/frame-001.webp";
     firstImg.onload = () => {
@@ -81,7 +103,7 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
       }
     };
 
-    // Progressively stream the rest of the 299 WebP frames without blocking page
+    // Stream the rest of the 299 WebP frames progressively
     for (let i = 2; i <= frameCount; i++) {
       const img = new Image();
       const paddedIndex = i.toString().padStart(3, "0");
@@ -98,22 +120,11 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
     };
   }, [frameCount]);
 
-  // 2. Punchy intro transition (1.4s) to avoid keeping visitors waiting
-  useEffect(() => {
-    if (introState === "showing_text") {
-      drawFrame(0);
-
-      const timer = setTimeout(() => {
-        setIntroState("done");
-      }, 1400);
-
-      return () => clearTimeout(timer);
-    }
-  }, [introState, drawFrame]);
-
   // 3. Handle normal scroll animation after intro is done
   useEffect(() => {
     if (introState !== "done") return;
+
+    drawFrame(0);
 
     const handleScroll = () => {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -130,7 +141,7 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [introState, drawFrame, frameCount]);
 
-  // Prevent scrolling while intro is playing
+  // Prevent scrolling while loading
   useEffect(() => {
     if (introState !== "done") {
       document.body.style.overflow = "hidden";
@@ -147,6 +158,57 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
 
   return (
     <main className="bg-transparent min-h-screen text-gray-100 font-sans selection:bg-indigo-500/30">
+      {/* 2-Second Aesthetic Loading Screen */}
+      <div
+        className={`fixed inset-0 flex flex-col items-center justify-center z-50 bg-[#050505] transition-opacity duration-700 ${
+          introState === "loading" ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        {/* Ambient Glow */}
+        <div className="absolute w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative z-10 flex flex-col items-center text-center px-6">
+          {/* Monogram Badge */}
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 p-[1.5px] shadow-2xl shadow-indigo-500/30 mb-8 animate-pulse">
+            <div className="w-full h-full bg-[#08090f] rounded-[14.5px] flex items-center justify-center">
+              <span className="text-xl font-black tracking-tight text-white">LT</span>
+            </div>
+          </div>
+
+          {/* Heading */}
+          <h2 className="text-lg font-bold text-white mb-1 tracking-tight">
+            {initialData.profile.name}
+          </h2>
+          <p className="text-xs text-gray-400 mb-6 max-w-xs truncate">
+            {initialData.profile.headline}
+          </p>
+
+          {/* Label and Percentage */}
+          <div className="flex items-center justify-between w-64 mb-2.5 text-xs font-semibold tracking-[0.2em] text-gray-400 uppercase">
+            <span>Loading</span>
+            <span className="text-indigo-400 font-mono text-sm">{loadProgress}%</span>
+          </div>
+
+          {/* Glowing Gradient Progress Bar */}
+          <div className="w-64 h-1.5 bg-white/10 rounded-full overflow-hidden border border-white/5 p-[1px] shadow-inner">
+            <div
+              className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-400 rounded-full transition-all duration-75 ease-out shadow-[0_0_12px_rgba(99,102,241,0.6)]"
+              style={{ width: `${loadProgress}%` }}
+            />
+          </div>
+
+          {/* Dynamic Status Text */}
+          <p className="text-[11px] text-gray-500 mt-4 tracking-wider uppercase">
+            {loadProgress < 35
+              ? "Initializing environment..."
+              : loadProgress < 80
+              ? "Loading visual assets..."
+              : "Welcome"}
+          </p>
+        </div>
+      </div>
+
+      {/* Header */}
       {introState === "done" && (
         <Header
           resumeUrl={initialData.profile.resumeUrl}
@@ -161,37 +223,6 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
           ref={canvasRef}
           className="w-full h-full object-cover transition-opacity duration-1000 opacity-80 blur-none"
         />
-
-        {/* Overlay Content */}
-        <div
-          onClick={() => {
-            if (introState === "showing_text") setIntroState("done");
-          }}
-          className={`absolute inset-0 flex flex-col items-center justify-center z-20 ${
-            introState !== "done" ? "cursor-pointer pointer-events-auto" : "pointer-events-none"
-          }`}
-        >
-          {/* Intro Text with click-to-skip */}
-          <div
-            className={`transition-all duration-700 absolute flex flex-col items-center justify-center px-6 ${
-              introState === "showing_text"
-                ? "opacity-100 scale-100 translate-y-0"
-                : "opacity-0 scale-95 translate-y-8 pointer-events-none"
-            }`}
-          >
-            <h1 className="text-white text-5xl md:text-7xl font-extrabold tracking-tight drop-shadow-2xl text-center">
-              <span className="block text-2xl md:text-4xl text-gray-300 font-medium mb-4">
-                Hi! I&apos;m
-              </span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-500">
-                {initialData.profile.name}.
-              </span>
-            </h1>
-            <span className="text-xs text-white/40 mt-8 tracking-widest uppercase animate-pulse">
-              Click anywhere to skip
-            </span>
-          </div>
-        </div>
       </div>
 
       {/* Main Content Sections */}
