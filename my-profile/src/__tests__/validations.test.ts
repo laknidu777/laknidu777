@@ -6,6 +6,7 @@ import {
   skillSchema,
   profileSettingsSchema,
   contactSettingsSchema,
+  contactFormSchema,
 } from "../lib/validations";
 import { ProjectCategory } from "../types/project";
 
@@ -140,4 +141,40 @@ describe("Input Validation Schemas", () => {
       assert.equal(result.success, false);
     });
   });
+
+  describe("contactFormSchema", () => {
+    it("should accept valid inquiry input", () => {
+      const valid = {
+        name: "Alice Johnson",
+        email: "alice@example.com",
+        subject: "Freelance Next.js Project",
+        message: "Hi Laknidu, I'd like to collaborate on an interactive frontend web app.",
+      };
+      const result = contactFormSchema.safeParse(valid);
+      assert.equal(result.success, true);
+    });
+
+    it("should reject message shorter than 10 characters", () => {
+      const invalid = {
+        name: "Alice Johnson",
+        email: "alice@example.com",
+        subject: "Freelance",
+        message: "Hi",
+      };
+      const result = contactFormSchema.safeParse(invalid);
+      assert.equal(result.success, false);
+    });
+
+    it("should reject invalid email in inquiry form", () => {
+      const invalid = {
+        name: "Alice",
+        email: "not-valid",
+        subject: "Project",
+        message: "This is a full message for inquiry.",
+      };
+      const result = contactFormSchema.safeParse(invalid);
+      assert.equal(result.success, false);
+    });
+  });
 });
+
