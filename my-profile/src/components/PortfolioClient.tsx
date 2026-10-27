@@ -22,69 +22,92 @@ interface PortfolioClientProps {
 
 export default function PortfolioClient({ initialData }: PortfolioClientProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [images, setImages] = useState<HTMLImageElement[]>([]);
+  const imagesRef = useRef<(HTMLImageElement | null)[]>(new Array(300).fill(null));
 
-  // States for intro and loading
-  const [loadProgress, setLoadProgress] = useState(0);
-  const [introState, setIntroState] = useState<IntroState>("loading");
+  // States for intro
+  const [introState, setIntroState] = useState<IntroState>("showing_text");
 
   // Total number of frames in the directory
   const frameCount = 300;
 
-  // Preload images
-  useEffect(() => {
-    const loadedImages: HTMLImageElement[] = [];
-    let loadedCount = 0;
-
-    for (let i = 1; i <= frameCount; i++) {
-      const img = new Image();
-      const paddedIndex = i.toString().padStart(3, "0");
-      img.src = `/ezgif-6916cc84d1500b24-jpg/ezgif-frame-${paddedIndex}.png`;
-
-      const onImageLoaded = () => {
-        loadedCount++;
-        setLoadProgress(Math.floor((loadedCount / frameCount) * 100));
-
-        if (loadedCount === frameCount) {
-          setImages([...loadedImages]);
-          setIntroState("showing_text");
-        }
-      };
-
-      img.onload = onImageLoaded;
-      img.onerror = onImageLoaded;
-
-      loadedImages.push(img);
-    }
-  }, []);
-
   // Helper to draw a specific frame
   const drawFrame = useCallback((index: number) => {
-    if (!canvasRef.current || images.length === 0) return;
+    if (!canvasRef.current) return;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    const currentImage = images[index];
+    if (!ctx) return;
 
-    if (ctx && currentImage) {
-      if (canvas.width !== currentImage.width) canvas.width = currentImage.width;
-      if (canvas.height !== currentImage.height) canvas.height = currentImage.height;
-      ctx.drawImage(currentImage, 0, 0);
+    // Retrieve requested frame, or find nearest available loaded frame
+    let targetImg = imagesRef.current[index];
+    if (!targetImg || !targetImg.complete) {
+      for (let offset = 1; offset < frameCount; offset++) {
+        const prev = index - offset;
+        const next = index + offset;
+        if (prev >= 0 && imagesRef.current[prev]?.complete) {
+          targetImg = imagesRef.current[prev];
+          break;
+        }
+        if (next < frameCount && imagesRef.current[next]?.complete) {
+          targetImg = imagesRef.current[next];
+          break;
+        }
+      }
     }
-  }, [images]);
 
-  // 2. Show "Hi I'm Laknidu" intro text and then transition to done
+    if (targetImg && targetImg.complete && targetImg.naturalWidth > 0) {
+      if (canvas.width !== targetImg.naturalWidth) canvas.width = targetImg.naturalWidth;
+      if (canvas.height !== targetImg.naturalHeight) canvas.height = targetImg.naturalHeight;
+      ctx.drawImage(targetImg, 0, 0);
+    }
+  }, [frameCount]);
+
+  // 1. Instantly load first frame and stream remaining WebP frames in background
+  useEffect(() => {
+    let isCancelled = false;
+
+    // Load first frame immediately for instant visual
+    const firstImg = new Image();
+    firstImg.src = "/frames/frame-001.webp";
+    firstImg.onload = () => {
+      if (isCancelled) return;
+      imagesRef.current[0] = firstImg;
+      if (canvasRef.current) {
+        const ctx = canvasRef.current.getContext("2d");
+        if (ctx) {
+          canvasRef.current.width = firstImg.naturalWidth;
+          canvasRef.current.height = firstImg.naturalHeight;
+          ctx.drawImage(firstImg, 0, 0);
+        }
+      }
+    };
+
+    // Progressively stream the rest of the 299 WebP frames without blocking page
+    for (let i = 2; i <= frameCount; i++) {
+      const img = new Image();
+      const paddedIndex = i.toString().padStart(3, "0");
+      img.src = `/frames/frame-${paddedIndex}.webp`;
+      img.onload = () => {
+        if (!isCancelled) {
+          imagesRef.current[i - 1] = img;
+        }
+      };
+    }
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [frameCount]);
+
+  // 2. Punchy intro transition (1.4s) to avoid keeping visitors waiting
   useEffect(() => {
     if (introState === "showing_text") {
       drawFrame(0);
 
-      // Transition to done after the text introduction
       const timer = setTimeout(() => {
         setIntroState("done");
-      }, 3000);
+      }, 1400);
 
-      return () => {
-        clearTimeout(timer);
-      };
+      return () => clearTimeout(timer);
     }
   }, [introState, drawFrame]);
 
@@ -105,7 +128,7 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
     handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [introState, drawFrame]);
+  }, [introState, drawFrame, frameCount]);
 
   // Prevent scrolling while intro is playing
   useEffect(() => {
@@ -140,28 +163,20 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
         />
 
         {/* Overlay Content */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none">
-          {/* Loading Indicator */}
+        <div
+          onClick={() => {
+            if (introState === "showing_text") setIntroState("done");
+          }}
+          className={`absolute inset-0 flex flex-col items-center justify-center z-20 ${
+            introState !== "done" ? "cursor-pointer pointer-events-auto" : "pointer-events-none"
+          }`}
+        >
+          {/* Intro Text with click-to-skip */}
           <div
-            className={`transition-opacity duration-700 absolute ${
-              introState === "loading" ? "opacity-100" : "opacity-0"
-            } flex flex-col items-center`}
-          >
-            <div className="text-white text-xl tracking-[0.3em] font-light mb-4">LOADING</div>
-            <div className="w-48 h-1 bg-gray-800 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-white transition-all duration-300 ease-out"
-                style={{ width: `${loadProgress}%` }}
-              />
-            </div>
-          </div>
-
-          {/* Intro Text that appears and then disappears */}
-          <div
-            className={`transition-all duration-1000 absolute flex flex-col items-center justify-center px-6 ${
+            className={`transition-all duration-700 absolute flex flex-col items-center justify-center px-6 ${
               introState === "showing_text"
                 ? "opacity-100 scale-100 translate-y-0"
-                : "opacity-0 scale-95 translate-y-8"
+                : "opacity-0 scale-95 translate-y-8 pointer-events-none"
             }`}
           >
             <h1 className="text-white text-5xl md:text-7xl font-extrabold tracking-tight drop-shadow-2xl text-center">
@@ -172,6 +187,9 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
                 {initialData.profile.name}.
               </span>
             </h1>
+            <span className="text-xs text-white/40 mt-8 tracking-widest uppercase animate-pulse">
+              Click anywhere to skip
+            </span>
           </div>
         </div>
       </div>
