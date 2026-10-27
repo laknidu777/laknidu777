@@ -33,7 +33,7 @@ export default function AboutSection({ profile }: AboutSectionProps) {
         <p>{p2}</p>
         <p>{p3}</p>
 
-        <div className="pt-2 flex flex-wrap gap-3">
+        {/* <div className="pt-2 flex flex-wrap gap-3">
           <div className="px-4 py-2 bg-white/5 rounded-lg border border-white/10 text-sm font-medium text-indigo-300">
             Web Architecture
           </div>
@@ -43,7 +43,7 @@ export default function AboutSection({ profile }: AboutSectionProps) {
           <div className="px-4 py-2 bg-white/5 rounded-lg border border-white/10 text-sm font-medium text-pink-300">
             Performance Optimization
           </div>
-        </div>
+        </div> */}
       </motion.div>
     </SectionLayout>
   );
