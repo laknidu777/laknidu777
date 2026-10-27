@@ -13,6 +13,7 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
     "prisma:seed": "tsx scripts/seed-data.ts",
+    "admin:create": "tsx scripts/create-admin.ts",
     "docker:build": "docker build -t my-profile .",
     "docker:run": "docker run -p 3000:3000 my-profile",
     "docker:compose": "docker compose -f ../docker-compose.yml up --build"

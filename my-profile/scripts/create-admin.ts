@@ -19,9 +19,25 @@ const prisma = new PrismaClient({
 const rl = createInterface({ input: stdin, output: stdout });
 
 async function main() {
-  const name = (await rl.question("Admin name: ")).trim();
-  const email = (await rl.question("Admin email: ")).trim().toLowerCase();
-  const password = await rl.question("Admin password (hidden input is not available in this prompt): ");
+  const defaultName = process.env.ADMIN_NAME || "Laknidu Thilakawardhana";
+  const defaultEmail = (process.env.ADMIN_EMAIL || "laknidut@gmail.com").toLowerCase();
+  const envPassword = process.env.ADMIN_PASSWORD;
+
+  let name = defaultName;
+  let email = defaultEmail;
+  let password = envPassword || "";
+
+  if (!envPassword) {
+    const inputName = (await rl.question(`Admin name [${defaultName}]: `)).trim();
+    if (inputName) name = inputName;
+
+    const inputEmail = (await rl.question(`Admin email [${defaultEmail}]: `)).trim().toLowerCase();
+    if (inputEmail) email = inputEmail;
+
+    password = await rl.question("Admin password (12-72 characters): ");
+  } else {
+    console.log(`Using ADMIN_PASSWORD from environment for ${defaultEmail}...`);
+  }
 
   if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     throw new Error("Enter a name and a valid email address.");

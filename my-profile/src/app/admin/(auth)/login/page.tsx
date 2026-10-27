@@ -14,7 +14,7 @@ function LoginForm() {
 
   const isResetSuccess = searchParams.get("reset") === "success";
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("laknidut@gmail.com");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(
     errorParam === "CredentialsSignin"

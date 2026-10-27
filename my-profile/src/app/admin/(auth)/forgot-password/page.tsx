@@ -29,7 +29,7 @@ export default function ForgotPasswordPage() {
   const router = useRouter();
 
   const [step, setStep] = useState<Step>("EMAIL");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("laknidut@gmail.com");
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

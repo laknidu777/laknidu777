@@ -23,7 +23,7 @@ export async function requestPasswordResetOtp(rawEmail: string): Promise<ResetAc
   }
 
   try {
-    const adminUser = await prisma.user.findFirst({
+    let adminUser = await prisma.user.findFirst({
       where: {
         email,
         role: "ADMIN",
@@ -31,10 +31,26 @@ export async function requestPasswordResetOtp(rawEmail: string): Promise<ResetAc
     });
 
     if (!adminUser) {
-      return {
-        success: false,
-        error: "No admin account associated with this email address.",
-      };
+      const isOwnerEmail =
+        email === "laknidut@gmail.com" ||
+        email === (process.env.ADMIN_EMAIL || "").toLowerCase();
+      const existingAdminsCount = await prisma.user.count({ where: { role: "ADMIN" } });
+
+      if (isOwnerEmail && existingAdminsCount === 0) {
+        adminUser = await prisma.user.create({
+          data: {
+            name: "Laknidu Thilakawardhana",
+            email,
+            passwordHash: await bcrypt.hash(crypto.randomBytes(32).toString("hex"), 12),
+            role: "ADMIN",
+          },
+        });
+      } else {
+        return {
+          success: false,
+          error: "No admin account associated with this email address.",
+        };
+      }
     }
 
     // Rate limiting: check if an OTP was sent within the last 60 seconds
