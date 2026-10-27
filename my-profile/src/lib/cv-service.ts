@@ -273,7 +273,6 @@ export async function generateResumePdf(
   try {
     const cwd = process.cwd();
     const currentData = data || (await getCvData());
-    const jsonString = JSON.stringify(currentData);
 
     // Write temp JSON file for python to consume reliably
     const tempJsonPath = path.resolve(cwd, "resume_data.json");
@@ -286,13 +285,24 @@ export async function generateResumePdf(
     // Check script paths
     const scriptInScripts = path.resolve(cwd, "scripts", "generate_resume.py");
     const scriptInRoot = path.resolve(cwd, "..", "generate_resume.py");
-    const scriptPath = (await fs.stat(scriptInScripts).catch(() => null))
-      ? scriptInScripts
-      : scriptInRoot;
+    const hasInScripts = await fs.stat(scriptInScripts).catch(() => null);
+    const hasInRoot = await fs.stat(scriptInRoot).catch(() => null);
+    const scriptPath = hasInScripts ? scriptInScripts : hasInRoot ? scriptInRoot : null;
 
-    const command = `python "${scriptPath}" --data "${tempJsonPath}" --output "${publicPdfPath}" --html "${publicHtmlPath}"`;
+    if (!scriptPath) {
+      console.warn("Resume generator script not found; skipping dynamic compilation.");
+      return { success: false, error: "Resume generator script not found" };
+    }
 
-    await execAsync(command, { cwd });
+    const command = `python3 "${scriptPath}" --data "${tempJsonPath}" --output "${publicPdfPath}" --html "${publicHtmlPath}"`;
+
+    try {
+      await execAsync(command, { cwd });
+    } catch {
+      // Fallback to python if python3 is not the alias (e.g. Windows)
+      const winCommand = `python "${scriptPath}" --data "${tempJsonPath}" --output "${publicPdfPath}" --html "${publicHtmlPath}"`;
+      await execAsync(winCommand, { cwd });
+    }
 
     return { success: true, pdfPath: "/resume.pdf" };
   } catch (err: unknown) {

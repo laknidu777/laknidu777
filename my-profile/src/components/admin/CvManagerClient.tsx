@@ -20,8 +20,6 @@ import {
   Sparkles,
   BookOpen,
   Users,
-  ChevronDown,
-  ChevronUp,
 } from "lucide-react";
 import {
   CvData,

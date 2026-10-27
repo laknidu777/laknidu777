@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Header from "./Header";
 import HeroOverlay from "./HeroOverlay";
 import AboutSection from "./AboutSection";
@@ -59,7 +59,7 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
   }, []);
 
   // Helper to draw a specific frame
-  const drawFrame = (index: number) => {
+  const drawFrame = useCallback((index: number) => {
     if (!canvasRef.current || images.length === 0) return;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -70,7 +70,7 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
       if (canvas.height !== currentImage.height) canvas.height = currentImage.height;
       ctx.drawImage(currentImage, 0, 0);
     }
-  };
+  }, [images]);
 
   // 2. Show "Hi I'm Laknidu" intro text and then transition to done
   useEffect(() => {
@@ -86,7 +86,7 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
         clearTimeout(timer);
       };
     }
-  }, [introState, images]);
+  }, [introState, drawFrame]);
 
   // 3. Handle normal scroll animation after intro is done
   useEffect(() => {
@@ -105,7 +105,7 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
     handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [introState, images]);
+  }, [introState, drawFrame]);
 
   // Prevent scrolling while intro is playing
   useEffect(() => {

@@ -14,7 +14,6 @@ import {
   CheckCircle2,
   AlertCircle,
   Clock,
-  Shield,
 } from "lucide-react";
 import { updateAdminCredentials } from "@/actions/auth-credentials";
 

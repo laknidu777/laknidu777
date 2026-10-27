@@ -18,22 +18,21 @@ export async function sendOtpEmail({
   const pass = process.env.SMTP_PASS?.trim();
   const from = process.env.SMTP_FROM || `"Portfolio Admin" <${user || "no-reply@portfolio.local"}>`;
 
-  // Always log OTP in server console for local dev assurance
-  console.log(`\n======================================================`);
-  console.log(`🔑 [ADMIN OTP DISPATCH]`);
-  console.log(`Recipient: ${to}`);
-  console.log(`One-Time Code (OTP): [ ${otp} ]`);
-  console.log(`Expires in: ${expiresInMinutes} minutes`);
-  console.log(`======================================================\n`);
+  // In non-production environments without SMTP credentials, log OTP to console for developer testing
+  if (process.env.NODE_ENV !== "production" && (!user || !pass)) {
+    console.log(`\n[DEV ONLY] OTP for ${to}: [ ${otp} ] (Expires in ${expiresInMinutes}m)\n`);
+  }
 
   if (!user || !pass) {
-    console.warn(
-      `[SMTP Warning] SMTP_USER or SMTP_PASS is not configured in .env. Falling back to terminal display.`
-    );
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(
+        `[SMTP Warning] SMTP_USER or SMTP_PASS is not configured in .env. Falling back to local development console.`
+      );
+    }
     return {
       success: true,
       deliveredVia: "console",
-      error: "SMTP credentials not configured in .env; OTP logged to server terminal.",
+      error: "SMTP credentials not configured in environment.",
     };
   }
 

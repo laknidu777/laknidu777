@@ -86,7 +86,9 @@ export async function requestPasswordResetOtp(rawEmail: string): Promise<ResetAc
       deliveredVia: dispatchResult.deliveredVia,
       message: isSmtp
         ? `A 6-digit verification code has been dispatched to ${email}.`
-        : `A verification code was generated! (Notice: SMTP_PASS is pending in .env, so code [ ${otp} ] was logged to server terminal).`,
+        : process.env.NODE_ENV !== "production"
+        ? `A verification code was generated. (Local dev notice: check server console for OTP).`
+        : `A verification code has been generated and dispatched.`,
     };
   } catch (error) {
     console.error("requestPasswordResetOtp error:", error);
