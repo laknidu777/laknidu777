@@ -4,8 +4,8 @@ import { useState } from "react";
 import SectionLayout from "./SectionLayout";
 import { Mail, Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { Github, Linkedin, Twitter } from "./Icons";
-import { motion, AnimatePresence } from "framer-motion";
-import { submitContactInquiry } from "@/actions/contact";
+//import { motion, AnimatePresence } from "framer-motion";
+//import { submitContactInquiry } from "@/actions/contact";
 
 interface ContactSectionProps {
   contact?: {
@@ -27,60 +27,6 @@ export default function ContactSection({ contact }: ContactSectionProps) {
   const description =
     contact?.description ||
     "Whether you have a freelance project, a research opportunity, or just want to say hi, my inbox is always open. I'll try my best to get back to you!";
-
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-    honeypot: "",
-  });
-
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
-  const [feedback, setFeedback] = useState("");
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!formData.name.trim() || !formData.email.trim() || !formData.subject.trim() || !formData.message.trim()) {
-      setStatus("error");
-      setFeedback("Please fill out all required fields.");
-      return;
-    }
-
-    setStatus("submitting");
-    setFeedback("");
-
-    try {
-      const response = await submitContactInquiry(formData);
-
-      if (response.success) {
-        setStatus("success");
-        setFeedback(response.message || "Your message has been sent successfully!");
-        setFormData({
-          name: "",
-          email: "",
-          subject: "",
-          message: "",
-          honeypot: "",
-        });
-      } else {
-        setStatus("error");
-        setFeedback(response.error || "Failed to deliver message. Please reach out directly via email.");
-      }
-    } catch (err: unknown) {
-      console.error("[Contact Form Submit Error]", err);
-      setStatus("error");
-      setFeedback("An unexpected error occurred while sending your message. Please try again or email directly.");
-    }
-  };
 
   return (
     <SectionLayout id="contact" title="Get In Touch">

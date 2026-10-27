@@ -190,6 +190,8 @@ class ATSResumePDF(FPDF):
             ("Personal Projects", projects_dict.get("personal", []))
         ]
         
+        has_both = bool(projects_dict.get("work")) and bool(projects_dict.get("personal"))
+
         for cat_name, proj_list in categories:
             if not proj_list:
                 continue
@@ -197,10 +199,11 @@ class ATSResumePDF(FPDF):
             if self.get_y() > 260:
                 self.add_page()
 
-            self.set_font(self.font_name, "B", 9.5)
-            self.set_text_color(15, 76, 129)
-            self.cell(0, 4.3, cat_name)
-            self.ln(4.3)
+            if has_both:
+                self.set_font(self.font_name, "B", 9.5)
+                self.set_text_color(15, 76, 129)
+                self.cell(0, 4.3, cat_name)
+                self.ln(4.3)
             
             for proj in proj_list:
                 # Check for page boundary
@@ -606,8 +609,12 @@ def generate_html_resume(data, filepath):
 
     # Work Projects
     work_projs = data.get("projects", {}).get("work", [])
+    personal_projs = data.get("projects", {}).get("personal", [])
+    has_both = bool(work_projs) and bool(personal_projs)
+
     if work_projs:
-        html += '<div class="item-sub" style="font-weight: 700; font-size: 14px; margin-top: 14px; margin-bottom: 8px;">Work Projects</div>'
+        if has_both:
+            html += '<div class="item-sub" style="font-weight: 700; font-size: 14px; margin-top: 14px; margin-bottom: 8px;">Work Projects</div>'
         for proj in work_projs:
             techs = proj.get('technologies', '')
             if isinstance(techs, list):
@@ -621,9 +628,9 @@ def generate_html_resume(data, filepath):
             """
 
     # Personal Projects
-    personal_projs = data.get("projects", {}).get("personal", [])
     if personal_projs:
-        html += '<div class="item-sub" style="font-weight: 700; font-size: 14px; margin-top: 18px; margin-bottom: 8px;">Personal Projects</div>'
+        if has_both:
+            html += '<div class="item-sub" style="font-weight: 700; font-size: 14px; margin-top: 18px; margin-bottom: 8px;">Personal Projects</div>'
         for proj in personal_projs:
             techs = proj.get('technologies', '')
             if isinstance(techs, list):

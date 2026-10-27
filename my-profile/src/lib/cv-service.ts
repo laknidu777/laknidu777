@@ -119,39 +119,20 @@ export const defaultCvData: CvData = {
   projects: {
     work: [
       {
-        name: "COCO-VANTAGE",
+        name: "COCO VANTAGE",
         technologies:
-          "Next.js, NestJS, Prisma, PostgreSQL, Docker, GitHub Actions, Neon, Tailwind CSS",
+          "NestJs, NextJs, Typescript, Docker, Prisma, PostgreSQL, Neon",
         description:
-          "Enterprise-grade freelance web platform featuring high-throughput backend services, automated containerized deployments, and responsive analytics dashboards.",
+          "Developed an e-commerce platform for charcoal-based deodorizer products, enabling customers to browse products, place orders, make secure online payments through Stripe, and track their shipments. The platform includes an administrative dashboard for managing sales, inventory, and order fulfillment.",
       },
       {
         name: "Kivi",
-        technologies: "Flutter, Dart, Docker, GitHub Actions",
+        technologies: "Flutter, Dart, NestJs, PostgreSQL",
         description:
-          "Cross-platform mobile application providing seamless real-time notifications, modular state architecture, and containerized API sync.",
+          "Designed and developed a cloud-based Point-of-Sale (POS) system for small and medium-sized enterprises (SMEs), offering a subscription-based business model. Built to support sales and inventory operations across devices, the platform enables businesses to manage products, track inventory, and add items using mobile phones or PCs, with barcode scanning and both online and offline functionality.",
       },
     ],
-    personal: [
-      {
-        name: "Neon Nexus",
-        technologies: "React, Three.js, TailwindCSS",
-        description:
-          "Cyberpunk-themed interactive productivity system with real-time procedural 3D effects and mission-driven task management.",
-      },
-      {
-        name: "Quantum State Manager",
-        technologies: "TypeScript, React, State Management",
-        description:
-          "Zero-overhead state management library with time-travel debugging, snapshotting, and predictable immutable state mutations.",
-      },
-      {
-        name: "Echoes of Eternity",
-        technologies: "Rust, WebAssembly, Web Audio API",
-        description:
-          "High-performance procedural game engine compiled to WASM for 60fps browser execution with dynamic ambient synthesis.",
-      },
-    ],
+    personal: [],
   },
   skills: {
     "Cloud & DevOps": "AWS, Docker, Kubernetes, Ansible, GitHub Actions, GitLab, Git, Nginx, Apache",
@@ -335,8 +316,9 @@ export async function syncCvWithProject(project: {
     const isWork = project.category === "FREELANCE";
     const targetList = isWork ? cvData.projects.work : cvData.projects.personal;
 
+    const normalize = (s: string) => s.toLowerCase().replace(/[\s\-_]+/g, "");
     const existingIndex = targetList.findIndex(
-      (p) => p.name.toLowerCase() === project.title.toLowerCase()
+      (p) => normalize(p.name) === normalize(project.title)
     );
 
     if (existingIndex >= 0) {
