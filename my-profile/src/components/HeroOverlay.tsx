@@ -25,7 +25,7 @@ export default function HeroOverlay({ profile, contact }: HeroOverlayProps) {
   const bio =
     profile?.bio ||
     "Bridging the gap between design and deep technical engineering. Passionate about AI, Open Source, and crafting digital products that feel alive.";
-  const resumeUrl = profile?.resumeUrl || "/resume.pdf";
+  const resumeUrl = profile?.resumeUrl || "/api/resume";
 
   const githubUrl = contact?.github || "#";
   const linkedinUrl = contact?.linkedin || "#";

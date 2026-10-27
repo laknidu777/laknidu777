@@ -83,7 +83,7 @@ export async function getPortfolioData() {
         settingsMap["profile_about_p3"] ||
         "When I'm not writing code for web platforms or optimizing backend services, you can find me tinkering with game engines, contributing to open-source developer tools, or reading up on the latest advancements in artificial intelligence and human-computer interaction.",
       location: settingsMap["profile_location"] || "United Kingdom",
-      resumeUrl: settingsMap["profile_resume_url"] || "/resume.pdf",
+      resumeUrl: settingsMap["profile_resume_url"] || "/api/resume",
       availability:
         settingsMap["profile_availability"] || "Available for freelance opportunities",
     },

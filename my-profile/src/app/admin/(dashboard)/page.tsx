@@ -15,6 +15,7 @@ import {
   Clock,
   CheckCircle,
   ExternalLink,
+  FileText,
 } from "lucide-react";
 import { ProjectCategory } from "@/generated/prisma/client";
 
@@ -90,6 +91,13 @@ export default async function AdminDashboardOverview() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
+            <Link
+              href="/admin/cv"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-sm font-medium transition-colors"
+            >
+              <FileText size={16} />
+              <span>CV & Resume Studio</span>
+            </Link>
             <Link
               href="/admin/projects/new"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm shadow-lg shadow-indigo-600/30 transition-all hover:scale-[1.02] active:scale-[0.98]"

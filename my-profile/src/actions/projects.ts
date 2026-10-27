@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth-guard";
 import { projectSchema, ProjectInput } from "@/lib/validations";
 import { revalidatePath } from "next/cache";
+import { syncCvWithProject } from "@/lib/cv-service";
 
 export async function createProject(data: ProjectInput) {
   await requireAdmin();
@@ -58,7 +59,15 @@ export async function createProject(data: ProjectInput) {
     revalidatePath("/admin/personal");
     revalidatePath("/admin/research");
     revalidatePath("/admin/games");
+    revalidatePath("/admin/cv");
     revalidatePath("/");
+
+    // Auto-update CV and compile latest PDF if published
+    if (project.published) {
+      syncCvWithProject(project).catch((err) =>
+        console.error("Failed to auto-sync CV on create:", err)
+      );
+    }
 
     return { success: true, data: project };
   } catch (err: unknown) {
@@ -132,7 +141,15 @@ export async function updateProject(id: string, data: ProjectInput) {
     revalidatePath("/admin/research");
     revalidatePath("/admin/games");
     revalidatePath(`/admin/projects/${id}/edit`);
+    revalidatePath("/admin/cv");
     revalidatePath("/");
+
+    // Auto-update CV and compile latest PDF if published
+    if (project.published) {
+      syncCvWithProject(project).catch((err) =>
+        console.error("Failed to auto-sync CV on update:", err)
+      );
+    }
 
     return { success: true, data: project };
   } catch (err: unknown) {
@@ -185,7 +202,14 @@ export async function toggleProjectPublish(id: string, published: boolean) {
     revalidatePath("/admin/personal");
     revalidatePath("/admin/research");
     revalidatePath("/admin/games");
+    revalidatePath("/admin/cv");
     revalidatePath("/");
+
+    if (updated.published) {
+      syncCvWithProject(updated).catch((err) =>
+        console.error("Failed to auto-sync CV on publish toggle:", err)
+      );
+    }
 
     return { success: true, published: updated.published };
   } catch (err: unknown) {

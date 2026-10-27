@@ -1,0 +1,117 @@
+{
+  "personal_info": {
+    "name": "Laknidu Thilakawardhana",
+    "title": "DevOps & Software Engineer",
+    "email": "laknidut@gmail.com",
+    "phone": "+44 7700 900123",
+    "portfolio": "laknidu.dev",
+    "github": "github.com/laknidu777",
+    "linkedin": "linkedin.com/in/laknidu-thilakawardhana-411783247"
+  },
+  "summary": "DevOps and Software Engineer with proven expertise in orchestrating scalable cloud infrastructure, automated CI/CD pipelines, and high-performance full-stack applications. Experienced in Docker, Kubernetes, AWS, and modern microservices using .NET, NestJS, and Next.js. Dedicated to system reliability, infrastructure-as-code, and crafting frictionless developer workflows.",
+  "experience": [
+    {
+      "role": "Senior Software & DevOps Engineer",
+      "company": "TechNova Solutions",
+      "duration": "Jan 2024 - Present",
+      "bullets": [
+        "Architected and managed scalable cloud deployments on AWS with automated CI/CD pipelines using GitHub Actions, cutting release cycles by 55%.",
+        "Implemented micro-frontend architectures with Next.js and optimized backend rendering pipelines, resulting in a 40% reduction in latency.",
+        "Containerized core services with Docker and orchestrated workloads on Kubernetes, maintaining 99.98% system uptime."
+      ]
+    },
+    {
+      "role": "Full Stack Developer",
+      "company": "Creative Digital Agency",
+      "duration": "Jun 2021 - Dec 2023",
+      "bullets": [
+        "Engineered interactive web applications for high-profile client systems using Node.js, Next.js, and PostgreSQL with Prisma ORM.",
+        "Automated provisioning with Ansible scripts and configured Nginx reverse proxies with SSL termination for production clusters.",
+        "Built modular RESTful APIs and mentored junior software engineers in clean code and test-driven development."
+      ]
+    },
+    {
+      "role": "Research Assistant",
+      "company": "University Human-Computer Interaction Lab",
+      "duration": "Sep 2019 - May 2021",
+      "bullets": [
+        "Conducted empirical research on novel interaction paradigms and real-time collaboration tools with WebSockets and D3.js.",
+        "Co-authored 2 research papers accepted at premier ACM conferences (CHI & UIST)."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "BSc (Hons) in Software Engineering",
+      "institution": "University of Plymouth",
+      "duration": "2021 - 2024",
+      "grade": "First Class Honours"
+    }
+  ],
+  "projects": {
+    "work": [
+      {
+        "name": "COCO-VANTAGE",
+        "technologies": "Next.js, NestJS, Prisma, PostgreSQL, Docker, GitHub Actions, Neon, Tailwind CSS",
+        "description": "Enterprise-grade freelance web platform featuring high-throughput backend services, automated containerized deployments, and responsive analytics dashboards."
+      },
+      {
+        "name": "Kivi",
+        "technologies": "Flutter, Dart, Docker, GitHub Actions",
+        "description": "Cross-platform mobile application providing seamless real-time notifications, modular state architecture, and containerized API sync."
+      }
+    ],
+    "personal": [
+      {
+        "name": "Neon Nexus",
+        "technologies": "React, Three.js, TailwindCSS",
+        "description": "Cyberpunk-themed interactive productivity system with real-time procedural 3D effects and mission-driven task management."
+      },
+      {
+        "name": "Quantum State Manager",
+        "technologies": "TypeScript, React, State Management",
+        "description": "Zero-overhead state management library with time-travel debugging, snapshotting, and predictable immutable state mutations."
+      },
+      {
+        "name": "Echoes of Eternity",
+        "technologies": "Rust, WebAssembly, Web Audio API",
+        "description": "High-performance procedural game engine compiled to WASM for 60fps browser execution with dynamic ambient synthesis."
+      }
+    ]
+  },
+  "skills": {
+    "Cloud & DevOps": "AWS, Docker, Kubernetes, Ansible, GitHub Actions, GitLab, Git, Nginx, Apache",
+    "Frontend & Mobile": "Next.js, React Native, Flutter, JavaScript, Dart, Tailwind CSS",
+    "Backend & Services": ".NET, NestJS, Node.js, C#, PHP, C++, REST APIs",
+    "Databases & ORM": "PostgreSQL, MySQL, MongoDB, Microsoft SQL Server, Prisma, Firebase",
+    "Tools & Scripting": "PowerShell, Postman, Vercel, Canva, Linux"
+  },
+  "publications": [
+    {
+      "title": "Interactive Visualization of Quantum State Transitions in Web Environments",
+      "detail": "ACM Conference on Human Factors in Computing Systems (CHI) • 2023"
+    },
+    {
+      "title": "Analyzing the Impact of Micro-Animations on User Retention in SaaS Platforms",
+      "detail": "ACM Symposium on User Interface Software and Technology (UIST)"
+    }
+  ],
+  "activities": [
+    "Active Open Source Contributor across cloud infrastructure, developer toolkits, and DevOps automation.",
+    "Technical mentor at campus developer student clubs and hackathons focusing on cloud-native computing."
+  ],
+  "references": [
+    {
+      "name": "University of Plymouth Academic Reference",
+      "title": "Department of Computing & Engineering",
+      "phone": "+44 (0)1752 585858",
+      "email": "computing@plymouth.ac.uk"
+    },
+    {
+      "name": "Enterprise Systems Industry Reference",
+      "title": "Technical Lead, Cloud & Infrastructure",
+      "phone": "+44 7700 900456",
+      "email": "director@enterprisetech.co.uk"
+    }
+  ]
+}

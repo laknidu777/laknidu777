@@ -17,6 +17,7 @@ import {
   ExternalLink,
   ChevronRight,
   X,
+  FileText,
 } from "lucide-react";
 
 interface AdminSidebarProps {
@@ -46,6 +47,7 @@ const navSections = [
     items: [
       { name: "Experience", href: "/admin/experience", icon: Award },
       { name: "Skills", href: "/admin/skills", icon: Sparkles },
+      { name: "CV / ATS Resume", href: "/admin/cv", icon: FileText },
     ],
   },
   {

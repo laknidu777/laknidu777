@@ -10,7 +10,7 @@ interface HeaderProps {
 }
 
 export default function Header({
-  resumeUrl = "/resume.pdf",
+  resumeUrl = "/api/resume",
   hasResearch = false,
   hasGames = false,
 }: HeaderProps) {
