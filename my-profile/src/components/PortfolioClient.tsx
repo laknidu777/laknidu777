@@ -201,6 +201,9 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
           <HeroOverlay profile={initialData.profile} contact={initialData.contact} />
           <AboutSection profile={initialData.profile} />
 
+          {/* Skills */}
+          <SkillsSection skillCategories={initialData.skills} />
+
           {/* Research Section (rendered when published research exists) */}
           {hasResearch && <ResearchSection projects={initialData.researchProjects} />}
 
@@ -215,9 +218,6 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
 
           {/* Work Experience */}
           <ExperienceSection experiences={initialData.experiences} />
-
-          {/* Skills */}
-          <SkillsSection skillCategories={initialData.skills} />
 
           {/* Contact */}
           <ContactSection contact={initialData.contact} />

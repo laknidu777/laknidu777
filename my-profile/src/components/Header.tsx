@@ -27,12 +27,12 @@ export default function Header({
 
   const navLinks = [
     { name: "About", href: "#about" },
+    { name: "Skills", href: "#skills" },
     ...(hasResearch ? [{ name: "Research", href: "#research" }] : []),
     ...(hasGames ? [{ name: "Games", href: "#games" }] : []),
     { name: "Freelance", href: "#freelance" },
     { name: "Projects", href: "#projects" },
     { name: "Experience", href: "#experience" },
-    { name: "Skills", href: "#skills" },
     { name: "Contact", href: "#contact" },
   ];
 
