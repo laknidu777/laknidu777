@@ -1,10 +1,7 @@
-"use client";
-
-import { useState } from "react";
 import SectionLayout from "./SectionLayout";
-import { Mail, Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { Mail, ArrowUpRight } from "lucide-react";
 import { Github, Linkedin, Twitter } from "./Icons";
-//import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 //import { submitContactInquiry } from "@/actions/contact";
 
 interface ContactSectionProps {
@@ -30,55 +27,64 @@ export default function ContactSection({ contact }: ContactSectionProps) {
 
   return (
     <SectionLayout id="contact" title="Get In Touch">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-        {/* Left Column: Direct info & social links */}
-        <div>
-          <h3 className="text-2xl font-semibold text-white mb-6">{title}</h3>
-          <p className="text-gray-400 mb-8 leading-relaxed text-lg">{description}</p>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="bg-[#050505]/50 backdrop-blur-md border border-white/10 rounded-2xl p-8 md:p-12 hover:bg-[#050505]/70 hover:border-white/20 transition-all duration-300 max-w-4xl"
+      >
+        <h3 className="text-2xl md:text-3xl font-semibold text-white mb-4">{title}</h3>
+        <p className="text-gray-400 mb-8 leading-relaxed text-base md:text-lg max-w-2xl">
+          {description}
+        </p>
 
-          <div className="space-y-6">
-            <a
-              href={`mailto:${email}`}
-              className="flex items-center space-x-4 text-gray-300 hover:text-indigo-400 transition-colors group"
-            >
-              <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-indigo-500/20 transition-colors">
-                <Mail size={20} />
-              </div>
-              <span className="text-lg">{email}</span>
-            </a>
-
-            <div className="flex items-center space-x-4 pt-4">
-              <a
-                href={github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/20 transition-all"
-                aria-label="GitHub"
-              >
-                <Github size={20} />
-              </a>
-              <a
-                href={linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-blue-400 hover:bg-blue-500/20 transition-all"
-                aria-label="LinkedIn"
-              >
-                <Linkedin size={20} />
-              </a>
-              <a
-                href={twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-sky-400 hover:bg-sky-500/20 transition-all"
-                aria-label="Twitter"
-              >
-                <Twitter size={20} />
-              </a>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-6 pt-2">
+          <a
+            href={`mailto:${email}`}
+            className="inline-flex items-center space-x-3 px-6 py-3.5 rounded-xl bg-white/5 border border-white/10 hover:border-indigo-500/50 hover:bg-indigo-500/10 text-white font-medium transition-all group w-fit"
+          >
+            <div className="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover:bg-indigo-500/20 group-hover:scale-105 transition-all">
+              <Mail size={18} />
             </div>
+            <span>{email}</span>
+            <ArrowUpRight
+              size={18}
+              className="text-gray-400 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"
+            />
+          </a>
+
+          <div className="flex items-center space-x-3">
+            <a
+              href={github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all"
+              aria-label="GitHub"
+            >
+              <Github size={20} />
+            </a>
+            <a
+              href={linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 hover:border-blue-500/30 transition-all"
+              aria-label="LinkedIn"
+            >
+              <Linkedin size={20} />
+            </a>
+            <a
+              href={twitter}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-sky-400 hover:bg-sky-500/10 hover:border-sky-500/30 transition-all"
+              aria-label="Twitter"
+            >
+              <Twitter size={20} />
+            </a>
           </div>
         </div>
-      </div>
+      </motion.div>
     </SectionLayout>
   );
 }
