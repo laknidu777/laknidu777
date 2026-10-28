@@ -8,7 +8,7 @@ export async function getPortfolioData() {
   let settings: Awaited<ReturnType<typeof prisma.siteSetting.findMany>> = [];
 
   try {
-    [projects, experiences, skills, settings] = await Promise.all([
+    const queryPromise = Promise.all([
       // Only published projects ordered by sortOrder
       prisma.project.findMany({
         where: { published: true },
@@ -34,8 +34,20 @@ export async function getPortfolioData() {
       // Site settings
       prisma.siteSetting.findMany(),
     ]);
+
+    // Guardrail: Never let a sleeping or slow remote DB hang the server response beyond 2.5s
+    const results = await Promise.race([
+      queryPromise,
+      new Promise<null>((_, reject) =>
+        setTimeout(() => reject(new Error("Database query timed out (2500ms)")), 2500)
+      ),
+    ]);
+
+    if (results) {
+      [projects, experiences, skills, settings] = results;
+    }
   } catch (err: unknown) {
-    console.error("[PortfolioData Warning] Database query failed, using empty sets and defaults:", err);
+    console.warn("[PortfolioData Warning] Database query failed or timed out, using fallback defaults:", err instanceof Error ? err.message : err);
   }
 
   const settingsMap = settings.reduce<Record<string, string>>((acc, s) => {
