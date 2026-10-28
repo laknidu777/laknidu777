@@ -120,7 +120,7 @@ export default function ContactSection({ contact }: ContactSectionProps) {
               >
                 <Linkedin size={20} />
               </a>
-              {/* <a
+              <a
                 href={twitter}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -128,7 +128,7 @@ export default function ContactSection({ contact }: ContactSectionProps) {
                 aria-label="Twitter"
               >
                 <Twitter size={20} />
-              </a> */}
+              </a>
             </div>
           </div>
         </div>
