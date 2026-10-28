@@ -59,7 +59,7 @@ export default function ProjectsSection({ projects: dynamicProjects }: ProjectsS
 
   return (
     <SectionLayout id="projects" title="Personal Projects & Open Source">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         {displayList.map((project, idx) => (
           <motion.div
             key={project.title}
@@ -71,18 +71,18 @@ export default function ProjectsSection({ projects: dynamicProjects }: ProjectsS
               project.featured ? "md:col-span-2 lg:col-span-1" : ""
             }`}
           >
-            <div className="p-8 h-full flex flex-col">
-              <div className="flex justify-between items-start mb-6">
-                <div className="px-3 py-1 text-xs font-medium rounded-full bg-white/10 text-gray-300">
+            <div className="p-6 sm:p-8 h-full flex flex-col">
+              <div className="flex justify-between items-start mb-5 sm:mb-6 gap-3">
+                <div className="px-3 py-1 text-xs font-medium rounded-full bg-white/10 text-gray-300 flex-shrink-0">
                   {project.statusText || "Featured"}
                 </div>
-                <div className="flex space-x-3">
+                <div className="flex space-x-3 flex-shrink-0">
                   {project.githubUrl && (
                     <a
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gray-400 hover:text-white transition-colors"
+                      className="text-gray-400 hover:text-white transition-colors p-1"
                       aria-label="GitHub Repository"
                     >
                       <Github size={20} />
@@ -93,7 +93,7 @@ export default function ProjectsSection({ projects: dynamicProjects }: ProjectsS
                       href={project.projectUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gray-400 hover:text-white transition-colors"
+                      className="text-gray-400 hover:text-white transition-colors p-1"
                       aria-label="Live Demo"
                     >
                       <ExternalLink size={20} />
@@ -102,18 +102,18 @@ export default function ProjectsSection({ projects: dynamicProjects }: ProjectsS
                 </div>
               </div>
 
-              <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-indigo-400 transition-colors">
+              <h3 className="text-xl sm:text-2xl font-bold mb-3 text-white break-words group-hover:text-indigo-400 transition-colors">
                 {project.title}
               </h3>
-              <p className="text-gray-400 mb-6 flex-grow leading-relaxed">
+              <p className="text-gray-400 text-sm sm:text-base mb-6 flex-grow leading-relaxed">
                 {project.summary || project.description}
               </p>
 
-              <div className="flex flex-wrap gap-2 mt-auto">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-auto">
                 {project.technologies.map((tag) => (
                   <span
                     key={tag}
-                    className="px-3 py-1 text-xs font-medium text-indigo-300 bg-indigo-500/10 rounded-md"
+                    className="px-2.5 py-1 text-xs font-medium text-indigo-300 bg-indigo-500/10 rounded-md"
                   >
                     {tag}
                   </span>

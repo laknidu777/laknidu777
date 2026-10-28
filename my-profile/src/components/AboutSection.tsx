@@ -27,7 +27,7 @@ export default function AboutSection({ profile }: AboutSectionProps) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="bg-[#050505]/50 backdrop-blur-md border border-white/10 rounded-2xl p-8 md:p-10 hover:bg-[#050505]/70 hover:border-white/20 transition-all duration-300 space-y-6 text-lg text-gray-300 leading-relaxed"
+        className="bg-[#050505]/50 backdrop-blur-md border border-white/10 rounded-2xl p-6 sm:p-8 md:p-10 hover:bg-[#050505]/70 hover:border-white/20 transition-all duration-300 space-y-4 sm:space-y-6 text-base sm:text-lg text-gray-300 leading-relaxed"
       >
         <p>{p1}</p>
         <p>{p2}</p>

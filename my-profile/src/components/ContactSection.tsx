@@ -1,6 +1,6 @@
 import SectionLayout from "./SectionLayout";
 import { Mail, ArrowUpRight } from "lucide-react";
-import { Github, Linkedin, Twitter } from "./Icons";
+import { Github, Linkedin } from "./Icons";
 import { motion } from "framer-motion";
 //import { submitContactInquiry } from "@/actions/contact";
 
@@ -30,25 +30,27 @@ export default function ContactSection({ contact }: ContactSectionProps) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="bg-[#050505]/50 backdrop-blur-md border border-white/10 rounded-2xl p-8 md:p-12 hover:bg-[#050505]/70 hover:border-white/20 transition-all duration-300 max-w-4xl"
+        className="bg-[#050505]/50 backdrop-blur-md border border-white/10 rounded-2xl p-6 sm:p-8 md:p-12 hover:bg-[#050505]/70 hover:border-white/20 transition-all duration-300 max-w-4xl"
       >
-        <h3 className="text-2xl md:text-3xl font-semibold text-white mb-4">{title}</h3>
-        <p className="text-gray-400 mb-8 leading-relaxed text-base md:text-lg max-w-2xl">
+        <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold text-white mb-3 sm:mb-4 break-words">
+          {title}
+        </h3>
+        <p className="text-gray-400 mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base md:text-lg max-w-2xl">
           {description}
         </p>
 
-        <div className="flex flex-col sm:flex-row sm:items-center gap-6 pt-2">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 pt-2">
           <a
             href={`mailto:${email}`}
-            className="inline-flex items-center space-x-3 px-6 py-3.5 rounded-xl bg-white/5 border border-white/10 hover:border-indigo-500/50 hover:bg-indigo-500/10 text-white font-medium transition-all group w-fit"
+            className="inline-flex max-w-full items-center space-x-3 px-4 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-white/5 border border-white/10 hover:border-indigo-500/50 hover:bg-indigo-500/10 text-white font-medium transition-all group w-fit"
           >
-            <div className="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover:bg-indigo-500/20 group-hover:scale-105 transition-all">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover:bg-indigo-500/20 group-hover:scale-105 transition-all flex-shrink-0">
               <Mail size={18} />
             </div>
-            <span>{email}</span>
+            <span className="truncate text-sm sm:text-base">{email}</span>
             <ArrowUpRight
               size={18}
-              className="text-gray-400 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"
+              className="text-gray-400 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all flex-shrink-0"
             />
           </a>
 
@@ -57,7 +59,7 @@ export default function ContactSection({ contact }: ContactSectionProps) {
               href={github}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all"
+              className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all"
               aria-label="GitHub"
             >
               <Github size={20} />
@@ -66,7 +68,7 @@ export default function ContactSection({ contact }: ContactSectionProps) {
               href={linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 hover:border-blue-500/30 transition-all"
+              className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 hover:border-blue-500/30 transition-all"
               aria-label="LinkedIn"
             >
               <Linkedin size={20} />
