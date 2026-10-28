@@ -9,7 +9,6 @@ interface ContactSectionProps {
     email: string;
     github?: string;
     linkedin?: string;
-    twitter?: string;
     title?: string;
     description?: string;
   };
@@ -19,7 +18,6 @@ export default function ContactSection({ contact }: ContactSectionProps) {
   const email = contact?.email || "hello@example.com";
   const github = contact?.github || "#";
   const linkedin = contact?.linkedin || "#";
-  const twitter = contact?.twitter || "#";
   const title = contact?.title || "Let's build something amazing together.";
   const description =
     contact?.description ||
@@ -72,15 +70,6 @@ export default function ContactSection({ contact }: ContactSectionProps) {
               aria-label="LinkedIn"
             >
               <Linkedin size={20} />
-            </a>
-            <a
-              href={twitter}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-sky-400 hover:bg-sky-500/10 hover:border-sky-500/30 transition-all"
-              aria-label="Twitter"
-            >
-              <Twitter size={20} />
             </a>
           </div>
         </div>

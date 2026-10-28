@@ -41,12 +41,18 @@
             letter-spacing: 0.5px;
         }
         .contact-info {
-            font-size: 12.5px;
+            font-size: 12px;
             text-align: center;
             color: #718096;
             margin-bottom: 25px;
             border-bottom: 1px solid #e2e8f0;
             padding-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 4px 0;
+            line-height: 2;
         }
         .contact-info a {
             color: #718096;
@@ -54,6 +60,10 @@
         }
         .contact-info a:hover {
             text-decoration: underline;
+        }
+        .ci-sep {
+            color: #cbd5e0;
+            padding: 0 2px;
         }
         h2.section-title {
             font-size: 16px;
@@ -187,10 +197,10 @@
         <h1>Laknidu Thilakawardhana</h1>
         <div class="subtitle">DevOps & Software Engineer</div>
         <div class="contact-info">
-            laknidut@gmail.com &nbsp;|&nbsp; 
-            +94 768671725 &nbsp;|&nbsp; 
-            <a href="https://laknidu777-77lvjf0ld-lucky-c2db.vercel.app" target="_blank">laknidu777-77lvjf0ld-lucky-c2db.vercel.app</a> &nbsp;|&nbsp;
-            <a href="https://github.com/laknidu777" target="_blank">github.com/laknidu777</a> &nbsp;|&nbsp; 
+            <span>laknidut@gmail.com</span><span class="ci-sep">&nbsp;|&nbsp;</span>
+            <span>+94 768671725</span><span class="ci-sep">&nbsp;|&nbsp;</span>
+            <a href="https://laknidu.dev" target="_blank">laknidu.dev</a><span class="ci-sep">&nbsp;|&nbsp;</span>
+            <a href="https://github.com/laknidu777" target="_blank">github.com/laknidu777</a><span class="ci-sep">&nbsp;|&nbsp;</span>
             <a href="https://linkedin.com/in/laknidu-thilakawardhana-411783247" target="_blank">linkedin.com/in/laknidu-thilakawardhana-411783247</a>
         </div>
 

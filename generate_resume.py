@@ -100,21 +100,46 @@ class ATSResumePDF(FPDF):
             (display_linkedin, f"https://{display_linkedin}") if display_linkedin else None,
         ]
         items = [(self.clean_text(txt), url) for txt, url in items if txt]
-        
-        divider = "   |   "
-        self.set_font(self.font_name, "", 8.2)
-        
-        total_w = sum(self.get_string_width(txt) for txt, _ in items) + self.get_string_width(divider) * (len(items) - 1)
-        start_x = max(12, (self.w - total_w) / 2)
-        self.set_x(start_x)
-        
-        for idx, (txt, url) in enumerate(items):
-            self.set_text_color(85, 85, 85)
-            self.cell(self.get_string_width(txt), 3.9, txt, link=url)
-            if idx < len(items) - 1:
-                self.set_text_color(150, 150, 150)
-                self.cell(self.get_string_width(divider), 3.9, divider)
-        self.ln(4.5)
+
+        divider = "  |  "
+        self.set_font(self.font_name, "", 8.0)
+
+        # Usable page width (page width minus left/right margins)
+        usable_w = self.w - 24  # 12mm each side
+
+        # Calculate total width of all items on one row
+        total_w = sum(self.get_string_width(txt) for txt, _ in items) + \
+                  self.get_string_width(divider) * (len(items) - 1)
+
+        if total_w <= usable_w:
+            # All items fit on a single row -- centre them
+            start_x = (self.w - total_w) / 2
+            self.set_x(start_x)
+            for idx, (txt, url) in enumerate(items):
+                self.set_text_color(85, 85, 85)
+                self.cell(self.get_string_width(txt), 3.9, txt, link=url)
+                if idx < len(items) - 1:
+                    self.set_text_color(150, 150, 150)
+                    self.cell(self.get_string_width(divider), 3.9, divider)
+            self.ln(4.5)
+        else:
+            # Wrap into two centred rows: first row = first half, second row = remainder
+            mid = len(items) // 2
+            rows = [items[:mid], items[mid:]]
+            for row in rows:
+                if not row:
+                    continue
+                row_w = sum(self.get_string_width(txt) for txt, _ in row) + \
+                        self.get_string_width(divider) * (len(row) - 1)
+                start_x = max(12, (self.w - row_w) / 2)
+                self.set_x(start_x)
+                for idx, (txt, url) in enumerate(row):
+                    self.set_text_color(85, 85, 85)
+                    self.cell(self.get_string_width(txt), 3.9, txt, link=url)
+                    if idx < len(row) - 1:
+                        self.set_text_color(150, 150, 150)
+                        self.cell(self.get_string_width(divider), 3.9, divider)
+                self.ln(4.5)
 
     def draw_summary(self, text):
         if not text:
@@ -392,12 +417,18 @@ def generate_html_resume(data, filepath):
             letter-spacing: 0.5px;
         }
         .contact-info {
-            font-size: 12.5px;
+            font-size: 12px;
             text-align: center;
             color: #718096;
             margin-bottom: 25px;
             border-bottom: 1px solid #e2e8f0;
             padding-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 4px 0;
+            line-height: 2;
         }
         .contact-info a {
             color: #718096;
@@ -405,6 +436,10 @@ def generate_html_resume(data, filepath):
         }
         .contact-info a:hover {
             text-decoration: underline;
+        }
+        .ci-sep {
+            color: #cbd5e0;
+            padding: 0 2px;
         }
         h2.section-title {
             font-size: 16px;
@@ -535,7 +570,7 @@ def generate_html_resume(data, filepath):
     info = data.get("personal_info", {})
     portfolio = info.get("portfolio", "")
     display_portfolio = portfolio.replace('https://', '').replace('http://', '').rstrip('/')
-    portfolio_link = f'<a href="https://{display_portfolio}" target="_blank">{display_portfolio}</a> &nbsp;|&nbsp;' if display_portfolio else ''
+    portfolio_link_span = f'<a href="https://{display_portfolio}" target="_blank">{display_portfolio}</a><span class="ci-sep">&nbsp;|&nbsp;</span>' if display_portfolio else ''
     
     github = info.get("github", "")
     display_github = github.replace('https://', '').replace('http://', '').rstrip('/')
@@ -557,10 +592,10 @@ def generate_html_resume(data, filepath):
         <h1>{info.get('name', '')}</h1>
         <div class="subtitle">{info.get('title', '')}</div>
         <div class="contact-info">
-            {info.get('email', '')} &nbsp;|&nbsp; 
-            {info.get('phone', '')} &nbsp;|&nbsp; 
-            {portfolio_link}
-            <a href="https://{display_github}" target="_blank">{display_github}</a> &nbsp;|&nbsp; 
+            <span>{info.get('email', '')}</span><span class="ci-sep">&nbsp;|&nbsp;</span>
+            <span>{info.get('phone', '')}</span><span class="ci-sep">&nbsp;|&nbsp;</span>
+            {portfolio_link_span}
+            <a href="https://{display_github}" target="_blank">{display_github}</a><span class="ci-sep">&nbsp;|&nbsp;</span>
             <a href="https://{display_linkedin}" target="_blank">{display_linkedin}</a>
         </div>
 
