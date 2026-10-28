@@ -57,7 +57,7 @@ export default function SkillsSection({ skillCategories: dynamicCategories }: Sk
 
   return (
     <SectionLayout id="skills" title="Technical Skills">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {categories.map((category, idx) => (
           <motion.div
             key={category.title}
@@ -65,22 +65,28 @@ export default function SkillsSection({ skillCategories: dynamicCategories }: Sk
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: idx * 0.1 }}
-            className="p-6 rounded-2xl bg-[#050505]/50 backdrop-blur-md border border-white/5 hover:bg-[#050505]/70 transition-colors"
+            className="p-5 sm:p-6 rounded-2xl bg-[#050505]/50 backdrop-blur-md border border-white/5 hover:bg-[#050505]/70 transition-colors flex flex-col justify-between"
           >
-            <div className="flex items-center space-x-4 mb-6">
-              <div className="p-3 bg-white/5 rounded-lg">{getCategoryIcon(category.title)}</div>
-              <h3 className="text-xl font-semibold text-white">{category.title}</h3>
-            </div>
+            <div>
+              <div className="flex items-center space-x-3 sm:space-x-4 mb-4 sm:mb-6">
+                <div className="p-2.5 sm:p-3 bg-white/5 rounded-lg flex-shrink-0">
+                  {getCategoryIcon(category.title)}
+                </div>
+                <h3 className="text-lg sm:text-xl font-semibold text-white break-words">
+                  {category.title}
+                </h3>
+              </div>
 
-            <div className="flex flex-wrap gap-2">
-              {category.skills.map((skill) => (
-                <span
-                  key={skill}
-                  className="px-3 py-1.5 text-sm font-medium text-gray-300 bg-black/40 rounded-md border border-white/10 hover:border-white/30 hover:text-white transition-all cursor-default"
-                >
-                  {skill}
-                </span>
-              ))}
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                {category.skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-2.5 py-1 sm:px-3 sm:py-1.5 text-xs sm:text-sm font-medium text-gray-300 bg-black/40 rounded-md border border-white/10 hover:border-white/30 hover:text-white transition-all cursor-default"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
             </div>
           </motion.div>
         ))}

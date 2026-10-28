@@ -47,7 +47,7 @@ export default function ResearchSection({ projects: dynamicProjects }: ResearchS
 
   return (
     <SectionLayout id="research" title="Research & Publications">
-      <div className="space-y-8">
+      <div className="space-y-6 sm:space-y-8">
         {displayList.map((pub, idx) => (
           <motion.div
             key={pub.title}
@@ -55,34 +55,34 @@ export default function ResearchSection({ projects: dynamicProjects }: ResearchS
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: idx * 0.1 }}
-            className="group flex flex-col md:flex-row gap-6 bg-[#050505]/50 backdrop-blur-md border border-white/10 rounded-2xl p-6 md:p-8 hover:bg-[#050505]/70 hover:border-white/20 transition-all"
+            className="group flex flex-col sm:flex-row gap-4 sm:gap-6 bg-[#050505]/50 backdrop-blur-md border border-white/10 rounded-2xl p-5 sm:p-6 md:p-8 hover:bg-[#050505]/70 hover:border-white/20 transition-all"
           >
             <div className="flex-shrink-0 pt-1">
-              <div className="w-12 h-12 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <BookOpen size={24} />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <BookOpen size={20} className="sm:w-6 sm:h-6" />
               </div>
             </div>
 
-            <div className="flex-grow">
-              <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-2">
-                <h3 className="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors">
+            <div className="flex-grow min-w-0">
+              <div className="flex flex-col md:flex-row md:items-start justify-between gap-2 mb-2">
+                <h3 className="text-lg sm:text-xl font-bold text-white break-words group-hover:text-indigo-300 transition-colors">
                   {pub.title}
                 </h3>
               </div>
 
-              <p className="text-indigo-400 text-sm font-medium mb-4">
+              <p className="text-indigo-400 text-xs sm:text-sm font-medium mb-3 sm:mb-4">
                 {pub.role || "Laknidu Thilakawardhana"} &bull;{" "}
                 <span className="text-gray-400 italic">
                   {pub.impact || "Academic Publication"}
                 </span>
               </p>
 
-              <p className="text-gray-300 mb-6 leading-relaxed">
+              <p className="text-gray-300 text-sm sm:text-base mb-5 sm:mb-6 leading-relaxed">
                 {pub.summary || pub.description}
               </p>
 
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4">
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {pub.technologies.map((kw) => (
                     <span
                       key={kw}
@@ -93,15 +93,15 @@ export default function ResearchSection({ projects: dynamicProjects }: ResearchS
                   ))}
                 </div>
 
-                <div className="flex items-center space-x-4">
+                <div className="flex flex-wrap items-center gap-3 sm:gap-4">
                   {pub.projectUrl && (
                     <a
                       href={pub.projectUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors"
+                      className="flex items-center text-xs sm:text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors"
                     >
-                      <ExternalLink size={16} className="mr-1.5" /> Publication Link
+                      <ExternalLink size={15} className="mr-1.5" /> Publication Link
                     </a>
                   )}
                   {pub.githubUrl && (
@@ -109,9 +109,9 @@ export default function ResearchSection({ projects: dynamicProjects }: ResearchS
                       href={pub.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center text-sm font-medium text-gray-400 hover:text-white transition-colors"
+                      className="flex items-center text-xs sm:text-sm font-medium text-gray-400 hover:text-white transition-colors"
                     >
-                      <Github size={16} className="mr-1.5" /> Source
+                      <Github size={15} className="mr-1.5" /> Source
                     </a>
                   )}
                 </div>

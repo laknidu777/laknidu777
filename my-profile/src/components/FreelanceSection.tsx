@@ -40,38 +40,38 @@ function FreelanceCard({ project, idx }: { project: FreelanceDisplayItem; idx: n
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: idx * 0.1 }}
-      className="group relative bg-[#050505]/60 backdrop-blur-md border border-white/10 rounded-3xl p-6 md:p-8 hover:bg-[#050505]/80 hover:border-indigo-500/30 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-xl"
+      className="group relative bg-[#050505]/60 backdrop-blur-md border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 hover:bg-[#050505]/80 hover:border-indigo-500/30 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-xl"
     >
       {/* Background decorative gradient */}
       <div className="absolute -right-20 -top-20 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl group-hover:bg-indigo-500/20 transition-all pointer-events-none" />
 
       <div className="relative z-10">
         {/* Header: Client Tag & Title + Quick Link Icons */}
-        <div className="flex justify-between items-start gap-4 mb-5">
-          <div className="space-y-1">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-4 mb-5">
+          <div className="space-y-1 min-w-0 flex-1">
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/15 border border-indigo-500/30 text-indigo-300">
                 <Briefcase size={12} />
                 {project.client || "Client Engagement"}
               </span>
             </div>
-            <h3 className="text-2xl font-bold text-white tracking-tight group-hover:text-indigo-300 transition-colors">
+            <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight break-words group-hover:text-indigo-300 transition-colors">
               {project.title}
             </h3>
             {project.role && (
-              <p className="text-sm font-medium text-gray-400">
+              <p className="text-xs sm:text-sm font-medium text-gray-400">
                 {project.role}
               </p>
             )}
           </div>
 
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex items-center gap-2 flex-shrink-0 self-end sm:self-auto">
             {project.githubUrl && (
               <a
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:text-white hover:bg-white/15 transition-all"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:text-white hover:bg-white/15 transition-all"
                 title="View Source Code"
                 aria-label="View Source Code"
               >
@@ -83,7 +83,7 @@ function FreelanceCard({ project, idx }: { project: FreelanceDisplayItem; idx: n
                 href={project.projectUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-300 hover:text-white hover:bg-indigo-600 hover:scale-105 transition-all"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-300 hover:text-white hover:bg-indigo-600 hover:scale-105 transition-all"
                 title="Visit Website"
                 aria-label="Visit Website"
               >
@@ -144,18 +144,18 @@ function FreelanceCard({ project, idx }: { project: FreelanceDisplayItem; idx: n
 
           {/* Impact Metric */}
           {project.impact && (
-            <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3.5">
+            <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3 sm:p-3.5">
               <h4 className="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-1">
                 Delivered Impact
               </h4>
-              <p className="text-emerald-300 text-sm font-medium">{project.impact}</p>
+              <p className="text-emerald-300 text-xs sm:text-sm font-medium">{project.impact}</p>
             </div>
           )}
         </div>
       </div>
 
       {/* Bottom Footer: Technologies & Prominent Website Link Button */}
-      <div className="relative z-10 pt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-auto">
+      <div className="relative z-10 pt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mt-auto">
         {/* Technologies Pills */}
         <div className="flex flex-wrap gap-1.5 flex-1">
           {project.technologies.map((t) => (
@@ -174,7 +174,7 @@ function FreelanceCard({ project, idx }: { project: FreelanceDisplayItem; idx: n
             href={project.projectUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-md shadow-indigo-600/30 hover:shadow-indigo-600/50 flex-shrink-0"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-md shadow-indigo-600/30 hover:shadow-indigo-600/50 w-full sm:w-auto flex-shrink-0"
           >
             <span>Visit Website</span>
             <ExternalLink size={14} />
@@ -216,7 +216,7 @@ export default function FreelanceSection({ projects: dynamicProjects }: Freelanc
 
   return (
     <SectionLayout id="freelance" title="Freelance & Client Work">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
         {displayList.map((project, idx) => (
           <FreelanceCard key={project.title + idx} project={project} idx={idx} />
         ))}
@@ -224,4 +224,3 @@ export default function FreelanceSection({ projects: dynamicProjects }: Freelanc
     </SectionLayout>
   );
 }
-

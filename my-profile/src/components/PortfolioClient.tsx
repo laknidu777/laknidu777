@@ -148,16 +148,20 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
     const handleScroll = () => {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
       const maxScrollTop = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollFraction = maxScrollTop === 0 ? 0 : Math.max(0, Math.min(1, scrollTop / maxScrollTop));
+      const scrollFraction = maxScrollTop <= 0 ? 0 : Math.max(0, Math.min(1, scrollTop / maxScrollTop));
       const frameIndex = Math.min(frameCount - 1, Math.floor(scrollFraction * frameCount));
 
       requestAnimationFrame(() => drawFrame(frameIndex));
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
     handleScroll();
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
   }, [introState, drawFrame, frameCount]);
 
   // Prevent scrolling while loading
@@ -176,7 +180,7 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
   const hasGames = initialData.gameProjects.length > 0;
 
   return (
-    <main className="bg-transparent min-h-screen text-gray-100 font-sans selection:bg-indigo-500/30">
+    <main className="bg-transparent min-h-screen text-gray-100 font-sans selection:bg-indigo-500/30 overflow-x-hidden w-full">
       {/* Aesthetic Loading Screen (with instant click-to-skip) */}
       <div
         onClick={() => setIntroState("done")}
@@ -185,18 +189,18 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
         }`}
       >
         {/* Ambient Glow */}
-        <div className="absolute w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute w-72 h-72 sm:w-96 sm:h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col items-center text-center px-6">
+        <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-sm w-full">
           {/* Monogram Badge */}
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 p-[1.5px] shadow-2xl shadow-indigo-500/30 mb-8 animate-pulse">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 p-[1.5px] shadow-2xl shadow-indigo-500/30 mb-6 sm:mb-8 animate-pulse">
             <div className="w-full h-full bg-[#08090f] rounded-[14.5px] flex items-center justify-center">
-              <span className="text-xl font-black tracking-tight text-white">LT</span>
+              <span className="text-lg sm:text-xl font-black tracking-tight text-white">LT</span>
             </div>
           </div>
 
           {/* Heading */}
-          <h2 className="text-lg font-bold text-white mb-1 tracking-tight">
+          <h2 className="text-base sm:text-lg font-bold text-white mb-1 tracking-tight break-words">
             {initialData.profile.name}
           </h2>
           <p className="text-xs text-gray-400 mb-6 max-w-xs truncate">
@@ -204,13 +208,13 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
           </p>
 
           {/* Label and Percentage */}
-          <div className="flex items-center justify-between w-64 mb-2.5 text-xs font-semibold tracking-[0.2em] text-gray-400 uppercase">
+          <div className="flex items-center justify-between w-56 sm:w-64 mb-2.5 text-xs font-semibold tracking-[0.2em] text-gray-400 uppercase">
             <span>Loading</span>
             <span className="text-indigo-400 font-mono text-sm">{loadProgress}%</span>
           </div>
 
           {/* Glowing Gradient Progress Bar */}
-          <div className="w-64 h-1.5 bg-white/10 rounded-full overflow-hidden border border-white/5 p-[1px] shadow-inner">
+          <div className="w-56 sm:w-64 h-1.5 bg-white/10 rounded-full overflow-hidden border border-white/5 p-[1px] shadow-inner">
             <div
               className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-400 rounded-full transition-all duration-75 ease-out shadow-[0_0_12px_rgba(99,102,241,0.6)]"
               style={{ width: `${loadProgress}%` }}
@@ -238,7 +242,7 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
       )}
 
       {/* The fixed background canvas */}
-      <div className="fixed top-0 left-0 w-full h-screen overflow-hidden flex items-center justify-center bg-black -z-10 pointer-events-none">
+      <div className="fixed top-0 left-0 w-full h-[100dvh] overflow-hidden flex items-center justify-center bg-black -z-10 pointer-events-none">
         <canvas
           ref={canvasRef}
           className="w-full h-full object-cover transition-opacity duration-1000 opacity-80 blur-none"
@@ -247,20 +251,21 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
 
       {/* Main Content Sections */}
       {introState === "done" && (
-        <div className="relative z-20 bg-transparent">
+        <div className="relative z-20 bg-transparent w-full overflow-x-hidden">
           {/* Spacer to make the first page empty with a scroll down indicator */}
-          <div className="w-full h-screen pointer-events-none flex flex-col items-center justify-end pb-12">
+          <div className="w-full h-[100dvh] pointer-events-none flex flex-col items-center justify-end pb-8 sm:pb-12">
             <div className="animate-bounce flex flex-col items-center gap-2 text-white/50">
-              <span className="text-sm font-medium tracking-widest uppercase">Scroll Down</span>
+              <span className="text-xs sm:text-sm font-medium tracking-widest uppercase">Scroll Down</span>
               <svg
-                width="24"
-                height="24"
+                width="20"
+                height="20"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                className="sm:w-6 sm:h-6"
               >
                 <path d="M12 5v14M19 12l-7 7-7-7" />
               </svg>
