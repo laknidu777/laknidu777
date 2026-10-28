@@ -8,7 +8,6 @@ interface ContactSectionProps {
     email: string;
     github?: string;
     linkedin?: string;
-    twitter?: string;
     title?: string;
     description?: string;
   };
@@ -18,7 +17,6 @@ export default function ContactSection({ contact }: ContactSectionProps) {
   const email = contact?.email || "hello@example.com";
   const github = contact?.github || "#";
   const linkedin = contact?.linkedin || "#";
-  const twitter = contact?.twitter || "#";
   const title = contact?.title || "Let's build something amazing together.";
   const description =
     contact?.description ||
@@ -72,7 +70,6 @@ export default function ContactSection({ contact }: ContactSectionProps) {
             >
               <Linkedin size={20} />
             </a>
-            
           </div>
         </div>
       </motion.div>
