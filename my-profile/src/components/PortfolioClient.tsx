@@ -62,10 +62,10 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
     }
   }, [frameCount]);
 
-  // 1. Precise 2-Second Loading Progress Timer
+  // 1. Sleek, fast loading progress (600ms duration, with instant click-to-skip)
   useEffect(() => {
     const startTime = Date.now();
-    const duration = 2000; // Exactly 2 seconds
+    const duration = 600;
 
     const interval = setInterval(() => {
       const elapsed = Date.now() - startTime;
@@ -76,14 +76,14 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
         clearInterval(interval);
         setTimeout(() => {
           setIntroState("done");
-        }, 120);
+        }, 80);
       }
-    }, 25);
+    }, 20);
 
     return () => clearInterval(interval);
   }, []);
 
-  // 2. Load Frame 1 and stream remaining WebP frames in background while loading screen is active
+  // 2. Load Frame 1 immediately and stream remaining WebP frames in small controlled batches
   useEffect(() => {
     let isCancelled = false;
 
@@ -103,17 +103,36 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
       }
     };
 
-    // Stream the rest of the 299 WebP frames progressively
-    for (let i = 2; i <= frameCount; i++) {
-      const img = new Image();
-      const paddedIndex = i.toString().padStart(3, "0");
-      img.src = `/frames/frame-${paddedIndex}.webp`;
-      img.onload = () => {
-        if (!isCancelled) {
-          imagesRef.current[i - 1] = img;
+    // Progressively stream frames in small batches so we don't saturate the browser connection pool or dev server
+    let currentIndex = 2;
+    const batchSize = 6;
+
+    const streamNextBatch = () => {
+      if (isCancelled || currentIndex > frameCount) return;
+
+      const end = Math.min(currentIndex + batchSize, frameCount + 1);
+      for (let i = currentIndex; i < end; i++) {
+        const img = new Image();
+        const paddedIndex = i.toString().padStart(3, "0");
+        img.src = `/frames/frame-${paddedIndex}.webp`;
+        img.onload = () => {
+          if (!isCancelled) {
+            imagesRef.current[i - 1] = img;
+          }
+        };
+      }
+      currentIndex = end;
+
+      if (currentIndex <= frameCount) {
+        if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+          window.requestIdleCallback(() => streamNextBatch(), { timeout: 150 });
+        } else {
+          setTimeout(streamNextBatch, 50);
         }
-      };
-    }
+      }
+    };
+
+    streamNextBatch();
 
     return () => {
       isCancelled = true;
@@ -158,9 +177,10 @@ export default function PortfolioClient({ initialData }: PortfolioClientProps) {
 
   return (
     <main className="bg-transparent min-h-screen text-gray-100 font-sans selection:bg-indigo-500/30">
-      {/* 2-Second Aesthetic Loading Screen */}
+      {/* Aesthetic Loading Screen (with instant click-to-skip) */}
       <div
-        className={`fixed inset-0 flex flex-col items-center justify-center z-50 bg-[#050505] transition-opacity duration-700 ${
+        onClick={() => setIntroState("done")}
+        className={`fixed inset-0 flex flex-col items-center justify-center z-50 bg-[#050505] transition-opacity duration-500 cursor-pointer ${
           introState === "loading" ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
