@@ -4,7 +4,7 @@
     "title": "DevOps & Software Engineer",
     "email": "laknidut@gmail.com",
     "phone": "+94 768671725",
-    "portfolio": "laknidu.dev",
+    "portfolio": "https://laknidu777.vercel.app",
     "github": "github.com/laknidu777",
     "linkedin": "linkedin.com/in/laknidu-thilakawardhana-411783247"
   },
@@ -15,16 +15,15 @@
       "company": "Koombiyo delivery",
       "duration": "Jan 2024 - Present",
       "bullets": [
-        "Architected and managed scalable cloud deployments on AWS with automated CI/CD pipelines using GitHub Actions, cutting release cycles by 55%.",
-        "Implemented micro-frontend architectures with Next.js and optimized backend rendering pipelines, resulting in a 40% reduction in latency.",
-        "Containerized core services with Docker and orchestrated workloads on Kubernetes, maintaining 99.98% system uptime."
+        "Architected and managed scalable with Docker, cloud deployments on AWS with automated CI/CD pipelines using GitHub Actions, cutting release cycles.",
+        "Implemented micro-frontend architectures with Next.js and optimized backend rendering pipelines, resulting in a 40% reduction in latency."
       ]
     }
   ],
   "education": [
     {
       "degree": "BSc (Hons) in Computer Science",
-      "institution": "NSBM",
+      "institution": "NSBM - University of Plymouth",
       "duration": "2022 - 2025",
       "grade": "Second Upper Class Honours"
     }
@@ -32,33 +31,33 @@
   "projects": {
     "work": [
       {
-        "name": "Smart Home IoT Management System",
-        "technologies": "C++, Next.Js, ExpressJS, Node, PostgreSQL, React Native",
-        "description": "**Smart Home IoT Management System | Full-Stack & IoT Development**\n\nDesigned and developed a smart home IoT management system for large buildings and organizations, enabling centralized monitoring and control of devices such as lights and fans. Built a web-based management platform using **Next.js, Express.js, and React Native**, integrated with **ESP32 and Arduino UNO microcontrollers programmed in C++** for hardware-level device control.\n\n- Developed a centralized admin dashboard for managing devices, rooms, users, and access permissions across the building.\n- Implemented room management and user access control to ensure authorized individuals could manage designated spaces and devices.\n- Integrated IoT hardware with the software platform to enable remote control of connected electrical appliances.\n- Designed a scalable management solution to support multiple rooms, users, and connected devices within large building environments.\n\n**Technologies:** Next.js, Express.js, React Native, Arduino UNO, ESP32, C++, IoT, JavaScript."
-      },
-      {
-        "name": "COCO-VANTAGE",
-        "technologies": "Next.js, NestJS, Prisma, PostgreSQL, Docker, GitHub Actions, Neon, Tailwind CSS",
-        "description": "Enterprise-grade freelance web platform featuring high-throughput backend services, automated containerized deployments, and responsive analytics dashboards."
+        "name": "COCO VANTAGE",
+        "technologies": "NestJs, NextJs, Typescript, Docker, Prisma, PostgreSQL, Neon, Stripe",
+        "description": "Developed an e-commerce platform for charcoal-based deodorizer products, enabling customers to browse products, place orders, make secure online payments through Stripe, and track their shipments. The platform includes an administrative dashboard for managing sales, inventory, and order fulfillment.\n\nImplemented an online shopping and ordering experience to streamline product purchases and customer transactions.\n\nIntegrated the Stripe payment gateway to facilitate secure online payment processing.\n\nDeveloped order and shipment tracking functionality to help customers monitor their purchases.\n\nBuilt an administrative dashboard for centralized management of sales, inventory, and customer orders.\n\nStreamlined e-commerce operations by bringing product management, order processing, and sales monitoring into one platform.\n\nKey Areas: E-commerce Development, Stripe Payment Integration, Order Management, Shipment Tracking, Inventory Management, Sales Analytics, Admin Dashboard."
       },
       {
         "name": "Kivi",
-        "technologies": "Flutter, Dart, Docker, Github, NestJS, Node, PostgreSQL",
-        "description": "Cloud POS—Subscription-Based Point-of-Sale System | Full-Stack Development\n\nDesigned and developed a cloud-based Point-of-Sale (POS) system for small and medium-sized enterprises (SMEs), offering a subscription-based business model. Built to support sales and inventory operations across devices, the platform enables businesses to manage products, track inventory, and add items using mobile phones or PCs, with barcode scanning and both online and offline functionality.\n\n- Developed a cross-platform application using **Flutter** and backend services using **NestJS**, with **PostgreSQL** for data storage and management.\n- Implemented inventory management features to manage products, stock levels, and item information.\n- Designed role-based access management through an administrative panel, allowing business owners to grant appropriate access to multiple users.\n- Supported product entry and barcode scanning using mobile phones, alongside PC-based workflows.\n- Designed the system to support online and offline usage, enabling businesses to continue essential POS operations with limited or no internet connectivity.\n- Integrated **GitHub Actions** into the development workflow to automate CI/CD tasks and streamline software delivery.\n\n**Technologies:** Flutter, NestJS, PostgreSQL, GitHub Actions, REST APIs, Barcode Scanning, Cloud POS, Inventory Management, Subscription-Based SaaS."
+        "technologies": "Flutter, Dart, NestJs, PostgreSQL",
+        "description": "Designed and developed a cloud-based Point-of-Sale (POS) system for small and medium-sized enterprises (SMEs), offering a subscription-based business model. Built to support sales and inventory operations across devices, the platform enables businesses to manage products, track inventory, and add items using mobile phones or PCs, with barcode scanning and both online and offline functionality.\n\nDeveloped a cross-platform application using Flutter and backend services using NestJS, with PostgreSQL for data storage and management.\n\nImplemented inventory management features to manage products, stock levels, and item information.\n\nDesigned role-based access management through an administrative panel, allowing business owners to grant appropriate access to multiple users.\n\nSupported product entry and barcode scanning using mobile phones, alongside PC-based workflows.\n\nDesigned the system to support online and offline usage, enabling businesses to continue essential POS operations with limited or no internet connectivity.\n\nIntegrated GitHub Actions into the development workflow to automate CI/CD tasks and streamline software delivery."
       }
     ],
     "personal": [
       {
+        "name": "CloudOps Platform — DevOps Engineering Project (Ongoing)",
+        "technologies": "Linux(Ubuntu/WSL), Docker, Docker compose, Git, Github, Github actions, GitHub Container Registry (GHCR), AWS Systems Manager, Node.js, AWS, EC2(AWS)",
+        "description": "Developed and containerized a Node.js REST API with health-check endpoints and Docker health monitoring.\n\nImplemented a CI pipeline using GitHub Actions to validate application files, run automated tests, build Docker images, and publish versioned images to GitHub Container Registry.\n\nDeployed the containerized application to an AWS EC2 Ubuntu server and verified application and container health.\n\nConfigured AWS Systems Manager for remote instance management and command execution.\n\nPracticing reliable deployment and rollback procedures, with automated deployment, security scanning, infrastructure as code, and monitoring planned as future enhancements."
+      },
+      {
         "name": "Smart Home IoT Management System",
-        "technologies": "C++, Next.Js, ExpressJS, Node, PostgreSQL, React Native",
-        "description": "**Smart Home IoT Management System | Full-Stack & IoT Development**\n\nDesigned and developed a smart home IoT management system for large buildings and organizations, enabling centralized monitoring and control of devices such as lights and fans. Built a web-based management platform using **Next.js, Express.js, and React Native**, integrated with **ESP32 and Arduino UNO microcontrollers programmed in C++** for hardware-level device control.\n\n- Developed a centralized admin dashboard for managing devices, rooms, users, and access permissions across the building.\n- Implemented room management and user access control to ensure authorized individuals could manage designated spaces and devices.\n- Integrated IoT hardware with the software platform to enable remote control of connected electrical appliances.\n- Designed a scalable management solution to support multiple rooms, users, and connected devices within large building environments.\n\n**Technologies:** Next.js, Express.js, React Native, Arduino UNO, ESP32, C++, IoT, JavaScript."
+        "technologies": "TypeScript, NodeJs, NextJs, ExpressJS, PostgreSQL, C++, Arduino UNO, JavaScript, React Native",
+        "description": "Designed and developed a smart home IoT management system for large buildings and organizations, enabling centralized monitoring and control of devices such as lights and fans. Built a web-based management platform using Next.js, Express.js, and React Native, integrated with ESP32 and Arduino UNO microcontrollers programmed in C++ for hardware-level device control.\n\nDeveloped a centralized admin dashboard for managing devices, rooms, users, and access permissions across the building.\n\nImplemented room management and user access control to ensure authorized individuals could manage designated spaces and devices.\n\nIntegrated IoT hardware with the software platform to enable remote control of connected electrical appliances.\n\nDesigned a scalable management solution to support multiple rooms, users, and connected devices within large building environments."
       }
     ]
   },
   "skills": {
     "Cloud & DevOps": "AWS, Docker, Kubernetes, Ansible, GitHub Actions, GitLab, Git, Nginx, Apache",
-    "Frontend & Mobile": "Next.js, React Native, Flutter, JavaScript, Dart, Tailwind CSS",
-    "Backend & Services": ".NET, NestJS, Node.js, C#, PHP, C++, REST APIs",
+    "Frontend & Mobile": "Next.js, React Native, Flutter, JavaScript, Dart, Tailwind CSS,HTML, CSS",
+    "Backend & Services": ".NET, NestJS, Node.js, C#, PHP, C++, REST APIs, ExpressJS, ",
     "Databases & ORM": "PostgreSQL, MySQL, MongoDB, Microsoft SQL Server, Prisma, Firebase",
     "Tools & Scripting": "PowerShell, Postman, Vercel, Canva, Linux"
   },
