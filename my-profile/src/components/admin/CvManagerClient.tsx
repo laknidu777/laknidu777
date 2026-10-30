@@ -33,7 +33,9 @@ import {
   saveCvAction,
   regenerateCvPdfAction,
   syncCvFromDbAction,
+  ResumeStatus,
 } from "@/actions/cv";
+import CustomCvUploader from "./CustomCvUploader";
 
 interface AvailableProject {
   id: string;
@@ -47,6 +49,7 @@ interface AvailableProject {
 interface CvManagerClientProps {
   initialData: CvData;
   availableProjects: AvailableProject[];
+  initialResumeStatus?: ResumeStatus;
 }
 
 type TabType =
@@ -63,6 +66,7 @@ type TabType =
 export default function CvManagerClient({
   initialData,
   availableProjects,
+  initialResumeStatus,
 }: CvManagerClientProps) {
   const [data, setData] = useState<CvData>(initialData);
   const [activeTab, setActiveTab] = useState<TabType>("personal");
@@ -73,6 +77,15 @@ export default function CvManagerClient({
     type: "success" | "error";
     text: string;
   } | null>(null);
+
+  const fallbackResumeStatus: ResumeStatus = initialResumeStatus || {
+    mode: "custom",
+    fileName: null,
+    fileSize: null,
+    uploadedAt: null,
+    customFileExists: false,
+    liveFileExists: true,
+  };
 
   // Modal for project import
   const [showImportModal, setShowImportModal] = useState<"work" | "personal" | null>(null);
@@ -261,6 +274,9 @@ export default function CvManagerClient({
           <span className="text-sm font-medium">{statusMessage.text}</span>
         </div>
       )}
+
+      {/* 🚀 Custom Designed CV (PDF) Dropzone & Document Manager */}
+      <CustomCvUploader initialStatus={fallbackResumeStatus} />
 
       {/* Navigation Tabs */}
       <div className="flex overflow-x-auto pb-1 gap-2 border-b border-white/10 scrollbar-none">
