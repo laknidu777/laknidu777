@@ -62,9 +62,6 @@ export default function Footer({ profile }: FooterProps) {
             <a href="#contact" className="hover:text-white transition-colors">
               Contact
             </a>
-            <a href="/admin" className="hover:text-indigo-400 transition-colors">
-              Admin CMS
-            </a>
           </div>
         </div>
       </div>
