@@ -32,11 +32,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No file was uploaded." }, { status: 400 });
     }
 
-    // 3. Validate file size (max 25MB)
-    const MAX_SIZE = 25 * 1024 * 1024;
+    // 3. Validate file size (max 4.5MB to adhere to Vercel Serverless Function payload limit)
+    const MAX_SIZE = 4.5 * 1024 * 1024;
     if (file.size > MAX_SIZE) {
       return NextResponse.json(
-        { error: "File exceeds 25MB limit. Please upload a smaller PDF." },
+        { error: "File exceeds 4.5MB limit. Please upload an optimized PDF under 4.5MB." },
         { status: 400 }
       );
     }
@@ -60,26 +60,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const cwd = process.cwd();
-    const publicDir = path.resolve(cwd, "public");
-
-    // Ensure public folder exists
-    await fs.mkdir(publicDir, { recursive: true });
-
-    // Primary resume file served to users
-    const liveResumePath = path.resolve(publicDir, "resume.pdf");
-    // Backup custom resume file so it is never lost
-    const customResumePath = path.resolve(publicDir, "custom_resume.pdf");
-
-    await Promise.all([
-      fs.writeFile(liveResumePath, buffer),
-      fs.writeFile(customResumePath, buffer),
-    ]);
-
+    const base64Data = buffer.toString("base64");
     const formattedSize = formatFileSize(file.size);
     const nowIso = new Date().toISOString();
 
-    // 6. Record metadata in database settings
+    // 6. Record metadata & binary content (base64) in database settings
+    // This guarantees persistence across serverless instances (Vercel) where the filesystem is read-only.
     await Promise.all([
       prisma.siteSetting.upsert({
         where: { key: "resume_mode" },
@@ -102,13 +88,36 @@ export async function POST(req: NextRequest) {
         create: { key: "resume_custom_uploaded_at", value: nowIso },
       }),
       prisma.siteSetting.upsert({
+        where: { key: "resume_custom_pdf_base64" },
+        update: { value: base64Data },
+        create: { key: "resume_custom_pdf_base64", value: base64Data },
+      }),
+      prisma.siteSetting.upsert({
         where: { key: "profile_resume_url" },
         update: { value: "/api/resume" },
         create: { key: "profile_resume_url", value: "/api/resume" },
       }),
     ]);
 
-    // 7. Revalidate website & admin pages
+    // 7. Optional local disk write (for local development or Docker containers)
+    // Non-fatal if on serverless environments like Vercel with read-only root filesystems.
+    try {
+      const cwd = process.cwd();
+      const publicDir = path.resolve(cwd, "public");
+      await fs.mkdir(publicDir, { recursive: true });
+
+      const liveResumePath = path.resolve(publicDir, "resume.pdf");
+      const customResumePath = path.resolve(publicDir, "custom_resume.pdf");
+
+      await Promise.all([
+        fs.writeFile(liveResumePath, buffer),
+        fs.writeFile(customResumePath, buffer),
+      ]);
+    } catch (fsErr) {
+      console.info("Notice: Could not write to filesystem (expected in read-only serverless environments such as Vercel). File is stored safely in database.", fsErr);
+    }
+
+    // 8. Revalidate website & admin pages
     revalidatePath("/");
     revalidatePath("/admin/cv");
     revalidatePath("/admin/profile");
@@ -128,4 +137,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-

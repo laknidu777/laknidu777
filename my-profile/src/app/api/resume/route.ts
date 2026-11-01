@@ -22,47 +22,96 @@ export async function GET() {
         resumeMode = modeSetting.value;
       }
     } catch (e) {
-      console.warn("Failed to check resume_mode from database, using file check:", e);
+      console.warn("Failed to check resume_mode from database, using fallback:", e);
     }
 
     let fileBuffer: Buffer | null = null;
 
-    // 1. If custom mode is active, prefer custom uploaded PDF
+    // 1. If custom mode is active, prefer custom uploaded PDF (from DB first, then disk)
     if (resumeMode === "custom") {
       try {
-        fileBuffer = await fs.readFile(customPdfPath);
-      } catch {
-        // Fallback to live resume.pdf if custom_resume.pdf doesn't exist yet
+        const dbCustomPdf = await prisma.siteSetting.findUnique({
+          where: { key: "resume_custom_pdf_base64" },
+        });
+        if (dbCustomPdf?.value) {
+          fileBuffer = Buffer.from(dbCustomPdf.value, "base64");
+        }
+      } catch (dbErr) {
+        console.warn("Failed reading custom PDF from database:", dbErr);
+      }
+
+      // Fallback to custom_resume.pdf on disk if not in DB
+      if (!fileBuffer) {
         try {
-          fileBuffer = await fs.readFile(livePdfPath);
+          fileBuffer = await fs.readFile(customPdfPath);
         } catch {
-          // If neither exists, generate
-          await generateResumePdf();
-          fileBuffer = await fs.readFile(livePdfPath);
+          // Fallback to live resume.pdf if custom_resume.pdf doesn't exist
+          try {
+            fileBuffer = await fs.readFile(livePdfPath);
+          } catch {
+            try {
+              await generateResumePdf();
+              fileBuffer = await fs.readFile(livePdfPath);
+            } catch {
+              // ignore
+            }
+          }
         }
       }
     } else {
-      // 2. Generated mode
+      // 2. Generated mode: read resume.pdf from disk
       try {
         fileBuffer = await fs.readFile(livePdfPath);
       } catch {
-        await generateResumePdf();
-        fileBuffer = await fs.readFile(livePdfPath);
+        try {
+          await generateResumePdf();
+          fileBuffer = await fs.readFile(livePdfPath);
+        } catch {
+          // Fallback to custom PDF in DB if livePdfPath fails
+          try {
+            const dbCustomPdf = await prisma.siteSetting.findUnique({
+              where: { key: "resume_custom_pdf_base64" },
+            });
+            if (dbCustomPdf?.value) {
+              fileBuffer = Buffer.from(dbCustomPdf.value, "base64");
+            }
+          } catch {
+            // ignore
+          }
+        }
       }
+    }
+
+    if (!fileBuffer) {
+      return NextResponse.json(
+        { error: "Resume file not found. Please upload or configure a resume in the admin dashboard." },
+        { status: 404 }
+      );
     }
 
     // Determine filename
     let downloadName = "Laknidu_Thilakawardhana_CV.pdf";
     try {
-      const nameSetting = await prisma.siteSetting.findUnique({
-        where: { key: "profile_name" },
-      });
-      if (nameSetting?.value) {
-        downloadName = `${nameSetting.value.trim().replace(/\s+/g, "_")}_CV.pdf`;
-      } else {
-        const cvData = await getCvData();
-        const candidateName = cvData.personal_info?.name?.trim().replace(/\s+/g, "_");
-        if (candidateName) downloadName = `${candidateName}_CV.pdf`;
+      if (resumeMode === "custom") {
+        const customNameSetting = await prisma.siteSetting.findUnique({
+          where: { key: "resume_custom_name" },
+        });
+        if (customNameSetting?.value) {
+          downloadName = customNameSetting.value;
+        }
+      }
+
+      if (!downloadName.toLowerCase().endsWith(".pdf")) {
+        const nameSetting = await prisma.siteSetting.findUnique({
+          where: { key: "profile_name" },
+        });
+        if (nameSetting?.value) {
+          downloadName = `${nameSetting.value.trim().replace(/\s+/g, "_")}_CV.pdf`;
+        } else {
+          const cvData = await getCvData();
+          const candidateName = cvData.personal_info?.name?.trim().replace(/\s+/g, "_");
+          if (candidateName) downloadName = `${candidateName}_CV.pdf`;
+        }
       }
     } catch {
       // fallback to default

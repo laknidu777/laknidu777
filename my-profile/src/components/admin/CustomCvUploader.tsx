@@ -45,8 +45,9 @@ export default function CustomCvUploader({ initialStatus }: CustomCvUploaderProp
       return;
     }
 
-    if (file.size > 25 * 1024 * 1024) {
-      showMsg("error", "File is too large. Max size is 25MB.");
+    // 4.5MB limit for Vercel Serverless Function payload limit
+    if (file.size > 4.5 * 1024 * 1024) {
+      showMsg("error", "File is too large. Max size on Vercel is 4.5MB.");
       return;
     }
 
@@ -362,7 +363,7 @@ export default function CustomCvUploader({ initialStatus }: CustomCvUploaderProp
               )}
             </p>
             <p className="text-xs text-gray-400 mt-1">
-              Supports any PDF exported from Canva, Figma, Word, or LaTeX • Max file size: 25MB
+              Supports any PDF exported from Canva, Figma, Word, or LaTeX • Max file size: 4.5MB
             </p>
           </div>
         </div>
@@ -370,4 +371,3 @@ export default function CustomCvUploader({ initialStatus }: CustomCvUploaderProp
     </div>
   );
 }
-

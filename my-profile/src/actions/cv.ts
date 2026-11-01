@@ -109,21 +109,21 @@ export async function getResumeStatusAction(): Promise<ResumeStatus> {
   const customPdfPath = path.resolve(cwd, "public", "custom_resume.pdf");
   const livePdfPath = path.resolve(cwd, "public", "resume.pdf");
 
-  let customFileExists = false;
-  let liveFileExists = false;
+  let customDiskExists = false;
+  let liveDiskExists = false;
 
   try {
     await fs.access(customPdfPath);
-    customFileExists = true;
+    customDiskExists = true;
   } catch {
-    customFileExists = false;
+    customDiskExists = false;
   }
 
   try {
     await fs.access(livePdfPath);
-    liveFileExists = true;
+    liveDiskExists = true;
   } catch {
-    liveFileExists = false;
+    liveDiskExists = false;
   }
 
   const settings = await prisma.siteSetting.findMany({
@@ -134,6 +134,7 @@ export async function getResumeStatusAction(): Promise<ResumeStatus> {
           "resume_custom_name",
           "resume_custom_size",
           "resume_custom_uploaded_at",
+          "resume_custom_pdf_base64",
         ],
       },
     },
@@ -144,11 +145,22 @@ export async function getResumeStatusAction(): Promise<ResumeStatus> {
     return acc;
   }, {});
 
-  const mode = (settingsMap["resume_mode"] as "custom" | "generated") || (customFileExists ? "custom" : "generated");
+  const hasCustomInDb = Boolean(settingsMap["resume_custom_pdf_base64"]);
+  // A custom file is considered existing ONLY if it's saved in the database
+  // or explicitly tracked with resume_custom_name and present on disk
+  const customFileExists =
+    hasCustomInDb || (Boolean(settingsMap["resume_custom_name"]) && customDiskExists);
+  const liveFileExists = liveDiskExists || hasCustomInDb;
+
+  const mode =
+    (settingsMap["resume_mode"] as "custom" | "generated") ||
+    (customFileExists ? "custom" : "generated");
 
   return {
     mode,
-    fileName: settingsMap["resume_custom_name"] || (customFileExists ? "custom_resume.pdf" : null),
+    fileName:
+      settingsMap["resume_custom_name"] ||
+      (customFileExists ? "custom_resume.pdf" : null),
     fileSize: settingsMap["resume_custom_size"] || null,
     uploadedAt: settingsMap["resume_custom_uploaded_at"] || null,
     customFileExists,
@@ -165,19 +177,48 @@ export async function switchResumeModeAction(mode: "custom" | "generated"): Prom
     const livePdfPath = path.resolve(cwd, "public", "resume.pdf");
 
     if (mode === "custom") {
-      // Copy custom_resume.pdf to resume.pdf if it exists
-      try {
-        const customBuffer = await fs.readFile(customPdfPath);
-        await fs.writeFile(livePdfPath, customBuffer);
-      } catch {
+      // Check if custom resume exists in DB or disk
+      const customDbSetting = await prisma.siteSetting.findUnique({
+        where: { key: "resume_custom_pdf_base64" },
+      });
+
+      let hasCustom = Boolean(customDbSetting?.value);
+
+      if (!hasCustom) {
+        try {
+          await fs.access(customPdfPath);
+          hasCustom = true;
+        } catch {
+          hasCustom = false;
+        }
+      }
+
+      if (!hasCustom) {
         return {
           success: false,
           error: "No custom CV has been uploaded yet. Please upload a PDF first.",
         };
       }
+
+      // Try copying on disk if writable (non-fatal if on serverless read-only filesystem)
+      try {
+        if (customDbSetting?.value) {
+          const buffer = Buffer.from(customDbSetting.value, "base64");
+          await fs.writeFile(livePdfPath, buffer);
+        } else {
+          const customBuffer = await fs.readFile(customPdfPath);
+          await fs.writeFile(livePdfPath, customBuffer);
+        }
+      } catch {
+        // read-only filesystem (Vercel)
+      }
     } else {
       // Re-generate or restore standard ATS resume
-      await generateResumePdf();
+      try {
+        await generateResumePdf();
+      } catch {
+        // non-fatal on serverless
+      }
     }
 
     await prisma.siteSetting.upsert({
@@ -209,7 +250,7 @@ export async function deleteCustomResumeAction(): Promise<{ success: boolean; er
     try {
       await fs.unlink(customPdfPath);
     } catch {
-      // ignore if already deleted
+      // ignore if already deleted or read-only filesystem
     }
 
     await Promise.all([
@@ -221,14 +262,23 @@ export async function deleteCustomResumeAction(): Promise<{ success: boolean; er
       prisma.siteSetting.deleteMany({
         where: {
           key: {
-            in: ["resume_custom_name", "resume_custom_size", "resume_custom_uploaded_at"],
+            in: [
+              "resume_custom_name",
+              "resume_custom_size",
+              "resume_custom_uploaded_at",
+              "resume_custom_pdf_base64",
+            ],
           },
         },
       }),
     ]);
 
-    // Regenerate standard resume so website always has a valid file
-    await generateResumePdf();
+    // Regenerate standard resume so website always has a valid file (non-fatal on serverless)
+    try {
+      await generateResumePdf();
+    } catch {
+      // ignore
+    }
 
     revalidatePath("/admin/cv");
     revalidatePath("/admin/profile");
